@@ -8,5 +8,8 @@
     "build": "npm run build --prefix frontend"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  }
 }
