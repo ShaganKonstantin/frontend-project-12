@@ -8,7 +8,7 @@ export const AuthorizationForm = () => (
         <div className="col-12 col-md-8 col-xxl-6">
             <div className="card-body row p-5 d-flex">
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center d-flex">
-                    <img src="/public/loginImage.jpg" alt="Войти" className="rounded-circle" />
+                    <img src="/loginImage.jpg" alt="Войти" className="rounded-circle" />
                 </div>
                 <div className="form col-12 col-md-6 mt-3 mt-md-0">
                     <h2 className="text-center mb-4">Войти</h2>
