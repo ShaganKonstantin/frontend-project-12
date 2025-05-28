@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 const regx = {
-    username: /^[a-zA-Zа-яА-ЯёЁ\s\-]{2,20}$/,
+    username: /^[a-zA-Zа-яА-ЯёЁ\s-]{2,20}$/,
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/
 }
 
