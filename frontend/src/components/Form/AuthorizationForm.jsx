@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SignupSchema } from './validation.js';
 import { useFormik } from 'formik';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -7,6 +7,14 @@ import axios from 'axios';
 export const AuthorizationForm = () => {
     const location = useLocation();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('AuthorizationToken');
+        if(token) {
+            const { from } = location.state || {from: {pathname: '/'}}
+            navigate(from)
+        }
+    }, [location.state, navigate])
     
     const formik = useFormik({
         initialValues: {
