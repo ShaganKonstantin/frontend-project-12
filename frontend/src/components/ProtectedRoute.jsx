@@ -1,10 +1,10 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./Hooks";
 
 export const ProtectedRoute = ({children}) => {
-    const location = useLocation();
     const navigate = useNavigate();
 
-    const token = localStorage.getItem('AuthorizationToken');
+    const { token } = useAuth();
     
     if (!token) {
         navigate('/login', {state: {from: location, replace: true}});

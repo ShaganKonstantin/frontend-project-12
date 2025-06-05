@@ -2,11 +2,13 @@ import React, { useEffect } from "react";
 import { SignupSchema } from './validation.js';
 import { useFormik } from 'formik';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from "../Hooks/index.jsx";
 import axios from 'axios';
 
 export const AuthorizationForm = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     useEffect(() => {
         const token = localStorage.getItem('AuthorizationToken');
@@ -24,11 +26,11 @@ export const AuthorizationForm = () => {
         validationSchema: SignupSchema,
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             try {
-                const { from } = location.state || { from: {pathname: '/'} };
+                // const { from } = location.state || { from: {pathname: '/'} };
                 const response = await axios.post('/api/v1/login', values);
                 const token = response.data;
-                localStorage.setItem('AuthorizationToken', JSON.stringify(token));
-                navigate(from)
+                // localStorage.setItem('AuthorizationToken', JSON.stringify(token));
+                login(token)
             // eslint-disable-next-line no-unused-vars
             } catch (error) {
                 setErrors({ auth: 'Неверные имя пользователя или пароль' })
