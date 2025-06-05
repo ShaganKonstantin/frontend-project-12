@@ -7,21 +7,20 @@ import { AuthProvider } from './components/Slices/AuthSlice.jsx';
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           <Route path='/' element={
             <ProtectedRoute>
               <HomePage />
             </ProtectedRoute>
-          }></Route>
-          <Route path='login' element={<AuthorizationForm />}/>
-          <Route path='*' element={<PageNotFound />} />
+          }/>
+          <Route path='/login' element={<AuthorizationForm />}/>
+          <Route path='*' element={<PageNotFound />}/>
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
-
-  )
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

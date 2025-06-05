@@ -1,16 +1,23 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./Hooks";
+import { useEffect } from "react";
 
 export const ProtectedRoute = ({children}) => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const { token } = useAuth();
     
-    if (!token) {
-        navigate('/login', {state: {from: location, replace: true}});
-        return null; //т.к. работа navigate() происходит асинхронно, то надо возвращать null, чтобы прервать текущий рендер.
-    }
+    useEffect(() => {
+        if (!token) {
+            navigate('/login', {state: {from: location.pathname}, replace: true});
+        }
+    }, [token, location.pathname, navigate])
 
+    if (!token) {
+        return null;
+    }
+  
     return children;
 }
 

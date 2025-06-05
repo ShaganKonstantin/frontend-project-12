@@ -1,33 +1,42 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Contexts";
 import { useEffect, useState } from "react";
 
 export const AuthProvider = ({children}) => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(() => {
-        const storedToken = localStorage.getItem('AutorizationToken');
+        const storedToken = localStorage.getItem('AuthorizationToken');
         return storedToken ? JSON.parse(storedToken) : null;
     });
 
     useEffect(() => {
         if (token) {
-            localStorage.setItem('AuthorizationToken', JSON.stringify(token))
+            localStorage.setItem('AuthorizationToken', JSON.stringify(token));
+
+            if (location.pathname === '/login') {
+                navigate('/', { replace: true })
+            }
         } else {
             localStorage.removeItem('AuthorizationToken')
         }
-    }, [token])
+    }, [token, navigate, location.pathname])
 
     const login = (newToken) => {
         setToken(newToken);
-        navigate('/')
     };
 
     const logout = () => {
         setToken(null);
-        navigate('/login')
     }
+
+    useEffect(() => {
+        if (!token && location.pathname !== '/login') {
+            navigate('/login', { replace: true })
+        } 
+    }, [token, navigate, location.pathname])
 
     return (
         <AuthContext.Provider value={{user, login, logout, token}}>

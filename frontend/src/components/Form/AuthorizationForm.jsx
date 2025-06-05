@@ -26,10 +26,8 @@ export const AuthorizationForm = () => {
         validationSchema: SignupSchema,
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             try {
-                // const { from } = location.state || { from: {pathname: '/'} };
                 const response = await axios.post('/api/v1/login', values);
                 const token = response.data;
-                // localStorage.setItem('AuthorizationToken', JSON.stringify(token));
                 login(token)
             // eslint-disable-next-line no-unused-vars
             } catch (error) {
