@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../Hooks";
+import { useGetChannelsQuery, useGetMessagesQuery } from "../Slices/ApiSlice";
 
 export const HomePage = () => {
-    const { logout } = useAuth();
+    const { logout, token } = useAuth();
+
+    const {
+        data: channels = [],
+        isLoading: isChannelsLoading,
+        error: channelsError,
+    } = useGetChannelsQuery(undefined, { skip: !token });
+
+    const {
+        data: messages = [],
+        isLoading: isMessagesLoading,
+        error: messagesError,
+    } = useGetMessagesQuery(undefined, { skip: !token });
+
+    const [currentChannelId, setCurrentChannelId] = useState(null);
+
+    const messageToMatchChannel = messages.filter((message) => message.channelId === currentChannelId)
+
 
     return (
         <div className="h-100">
