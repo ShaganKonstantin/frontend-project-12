@@ -8,19 +8,20 @@ export const AuthProvider = ({children}) => {
 
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(() => {
-        const storedToken = localStorage.getItem('AuthorizationToken');
-        return storedToken ? JSON.parse(storedToken) : null;
+        return localStorage.getItem('AuthorizationToken');
     });
 
     useEffect(() => {
         if (token) {
-            localStorage.setItem('AuthorizationToken', JSON.stringify(token));
-
+            localStorage.setItem('AuthorizationToken', token);
             if (location.pathname === '/login') {
                 navigate('/', { replace: true })
             }
         } else {
-            localStorage.removeItem('AuthorizationToken')
+            localStorage.removeItem('AuthorizationToken');
+            if (location.pathname !== '/login') {
+              navigate('/login');
+            }
         }
     }, [token, navigate, location.pathname])
 
@@ -31,12 +32,6 @@ export const AuthProvider = ({children}) => {
     const logout = () => {
         setToken(null);
     }
-
-    useEffect(() => {
-        if (!token && location.pathname !== '/login') {
-            navigate('/login', { replace: true })
-        } 
-    }, [token, navigate, location.pathname])
 
     return (
         <AuthContext.Provider value={{user, login, logout, token}}>
