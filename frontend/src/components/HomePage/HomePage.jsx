@@ -25,9 +25,9 @@ export const HomePage = () => {
         return <div className="text-center mt-5">Загрузка...</div>;
       }
     
-    //   if (channelsError || messagesError) {
-    //     return <div className="text-center mt-5">Ошибка загрузки данных</div>;
-    //   }
+      if (channelsError || messagesError) {
+        return <div className="text-center mt-5">Ошибка загрузки данных</div>;
+      }
 
 
     const MessageForm = ({ channelId }) => {
@@ -43,8 +43,13 @@ export const HomePage = () => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="input-group">
-                    <input type="text" className="form-control" value={text} onChange={(e) => setText(e.target.value)} placeholder="Введите сообщение..." />
-                    <button type="submit" className="btn btn-primary">Отправить сообщение</button>
+                    <input type="text" className="border-0 p-0 ps-2 form-control" value={text} onChange={(e) => setText(e.target.value)} placeholder="Введите сообщение..." />
+                    <button type="submit" className="btn btn-group-vertical">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor" className="bi bi-arrow-right-square">
+                            <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"></path>
+                        </svg>
+                        <span className="visually-hidden">Отправить</span>
+                    </button>
                 </div>
             </form>
         )
@@ -83,26 +88,30 @@ export const HomePage = () => {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="col-md-9 d-flex flex-column h-100">
-                                {currentChannelId ? (
-                                    <>
-                                        <div className="p-3 border-bottom">
-                                            <h4 className="m-0">#{channels.find((c) => c.id === currentChannelId)?.name}</h4>
-                                        </div>
-                                        <div className="flex-grow-1 overflow-auto p-3">
-                                            {messageToMatchChannel.map((message) => (
-                                                <div id={message.id} className="mb-3">
-                                                    <strong>{message.username} : </strong> {message.body}
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="p-3 border-top">
-                                            <MessageForm channelId={currentChannelId}/>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="text-center mt-5">Выберите канал для общения</div>
-                                )}
+                            <div className="col p-0 h-100">
+                                <div className="d-flex flex-column h-100">
+                                    <div className="bg-light mb-4 p-3 shadow-sm small">
+                                            {currentChannelId ? (
+                                                <>
+                                                    <p className="m-0">
+                                                        <b className="m-0">#{channels.find((c) => c.id === currentChannelId)?.name}</b>
+                                                    </p>
+                                                    <div className="flex-grow-1 overflow-auto p-3">
+                                                        {messageToMatchChannel.map((message) => (
+                                                            <div id={message.id} className="mb-3">
+                                                                <strong>{message.username} : </strong> {message.body}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="p-3 border-top">
+                                                        <MessageForm channelId={currentChannelId}/>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className="text-center mt-5">Выберите канал для общения</div>
+                                            )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
