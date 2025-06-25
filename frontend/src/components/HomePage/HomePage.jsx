@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../Hooks";
 import { useGetChannelsQuery, useGetMessagesQuery, useSendMessageMutation } from "../Slices/ApiSlice";
+import { createSocket } from "../WebSocket/webSocket";
 
 export const HomePage = () => {
-    const { logout, token } = useAuth();
+    const { logout, token, user } = useAuth();
+    const [socket, setSocket] = useState(null);
+    const [messages, setMessages] = useState([]);
 
     const {
         data: channels = [],
@@ -12,12 +15,55 @@ export const HomePage = () => {
     } = useGetChannelsQuery(undefined, { skip: !token });
 
     const {
-        data: messages = [],
+        data: initialMessages = [],
         isLoading: isMessagesLoading,
         error: messagesError,
     } = useGetMessagesQuery(undefined, { skip: !token });
 
     const [currentChannelId, setCurrentChannelId] = useState(null);
+
+    useEffect(() => {
+        if(channels.length > 0) {
+            const generalChannel = channels.find((channel) => channel.name === 'general');
+            if(generalChannel) {
+                setCurrentChannelId(generalChannel.id);
+            }
+        }
+    }, [channels])
+
+    useEffect(() => {
+        setMessages(initialMessages)
+    }, [initialMessages]);
+
+    useEffect(() => {
+        if(!token || !user?.username) return;
+
+        const newSocket = createSocket(token, user.username);
+        setSocket(newSocket);
+
+        const handleNewMessage = (message) => {
+            setMessages(prev => [...prev, {
+                ...message, 
+                username: user.username || user.username
+            }])
+        };
+
+        newSocket.on('newMessage', handleNewMessage);
+
+        return () => {
+            newSocket.off('newMessage', handleNewMessage);
+            newSocket.disconnect();
+        }
+    }, [token, user]);
+
+    useEffect(() => {
+        if (channels.length > 0 && !currentChannelId) {
+            const generalChannel = channels.find(c => c.name === 'general');
+            if (generalChannel) {
+                setCurrentChannelId(generalChannel.id);
+            }
+        }
+    }, [channels, currentChannelId]);
 
     const messageToMatchChannel = messages.filter((message) => message.channelId === currentChannelId);
 
@@ -34,10 +80,19 @@ export const HomePage = () => {
         const [text, setText] = useState("");
         const [sendMessage] = useSendMessageMutation();
         
-        const handleSubmit = (e) => {
+        const handleSubmit = async (e) => {
             e.preventDefault();
-            if (text) {
-                sendMessage({body: text, channelId})
+            if (text && channelId) {
+                try {
+                    await sendMessage({
+                        body: text, 
+                        channelId,
+                        username: user.username
+                    }).unwrap();
+                    setText('');
+                } catch(error) {
+                    console.error('Ошибка отправки сообщения', error);
+                }
             }
         };
         return (

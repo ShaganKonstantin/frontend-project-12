@@ -21,4 +21,3 @@ export const ProtectedRoute = ({children}) => {
     return children;
 }
 
-//если есть токен, показывает дочерние компоненты.

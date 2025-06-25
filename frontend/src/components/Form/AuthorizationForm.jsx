@@ -27,7 +27,7 @@ export const AuthorizationForm = () => {
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             try {
                 const response = await axios.post('/api/v1/login', values);
-                const { token } = response.data;
+                const { token, username } = response.data;
                 // localStorage.setItem('AuthorizationToken', JSON.stringify(token)); 
                 localStorage.setItem('AuthorizationToken', token); 
                 login(token);

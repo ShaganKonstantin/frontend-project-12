@@ -14,6 +14,14 @@ export const AuthProvider = ({children}) => {
     useEffect(() => {
         if (token) {
             localStorage.setItem('AuthorizationToken', token);
+
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                setUser({ username: payload.username });
+            } catch(e) {
+                console.error('Ошибка декодирования токена', e);
+            }
+
             if (location.pathname === '/login') {
                 navigate('/', { replace: true })
             }
