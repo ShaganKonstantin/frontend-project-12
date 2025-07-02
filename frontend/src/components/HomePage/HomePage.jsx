@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../Hooks";
-import { useGetChannelsQuery, useGetMessagesQuery, useSendMessageMutation } from "../Slices/ApiSlice";
-import { createSocket } from "../WebSocket/webSocket";
+import { useAuth } from "../Hooks/useAuth";
+import { useGetChannelsQuery, useGetMessagesQuery, useSendMessageMutation, useSubscribeToMessagesQuery } from "../Slices/ApiSlice";
 
 export const HomePage = () => {
-    const { logout, token, user } = useAuth();
-    const [socket, setSocket] = useState(null);
-    const [messages, setMessages] = useState([]);
+    const { logout, token } = useAuth();
+    const [currentChannelId, setCurrentChannelId] = useState(null);
 
     const {
         data: channels = [],
@@ -15,46 +13,12 @@ export const HomePage = () => {
     } = useGetChannelsQuery(undefined, { skip: !token });
 
     const {
-        data: initialMessages = [],
+        data: messages = [],
         isLoading: isMessagesLoading,
         error: messagesError,
     } = useGetMessagesQuery(undefined, { skip: !token });
 
-    const [currentChannelId, setCurrentChannelId] = useState(null);
-
-    useEffect(() => {
-        if(channels.length > 0) {
-            const generalChannel = channels.find((channel) => channel.name === 'general');
-            if(generalChannel) {
-                setCurrentChannelId(generalChannel.id);
-            }
-        }
-    }, [channels])
-
-    useEffect(() => {
-        setMessages(initialMessages)
-    }, [initialMessages]);
-
-    useEffect(() => {
-        if(!token || !user?.username) return;
-
-        const newSocket = createSocket(token, user.username);
-        setSocket(newSocket);
-
-        const handleNewMessage = (message) => {
-            setMessages(prev => [...prev, {
-                ...message, 
-                username: user.username || user.username
-            }])
-        };
-
-        newSocket.on('newMessage', handleNewMessage);
-
-        return () => {
-            newSocket.off('newMessage', handleNewMessage);
-            newSocket.disconnect();
-        }
-    }, [token, user]);
+    useSubscribeToMessagesQuery();
 
     useEffect(() => {
         if (channels.length > 0 && !currentChannelId) {
@@ -79,10 +43,16 @@ export const HomePage = () => {
     const MessageForm = ({ channelId }) => {
         const [text, setText] = useState("");
         const [sendMessage] = useSendMessageMutation();
+        const { user } = useAuth();
         
         const handleSubmit = async (e) => {
             e.preventDefault();
-            if (text && channelId) {
+            console.log('хэндлер вызывается');
+            console.log('text:', text);
+            console.log('channelId:', channelId);
+            console.log('user:', user);
+            if (text && channelId && user?.username) {
+                console.log('sendMessage', { text, channelId, username: user.username });
                 try {
                     await sendMessage({
                         body: text, 
@@ -101,7 +71,7 @@ export const HomePage = () => {
                     <input type="text" className="border-0 p-0 ps-2 form-control" value={text} onChange={(e) => setText(e.target.value)} placeholder="Введите сообщение..." />
                     <button type="submit" className="btn btn-group-vertical">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor" className="bi bi-arrow-right-square">
-                            <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"></path>
+                            <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"></path>
                         </svg>
                         <span className="visually-hidden">Отправить</span>
                     </button>
@@ -153,7 +123,7 @@ export const HomePage = () => {
                                                     </p>
                                                     <div className="flex-grow-1 overflow-auto p-3">
                                                         {messageToMatchChannel.map((message) => (
-                                                            <div id={message.id} className="mb-3">
+                                                            <div key={message.id} id={message.id} className="mb-3">
                                                                 <strong>{message.username} : </strong> {message.body}
                                                             </div>
                                                         ))}

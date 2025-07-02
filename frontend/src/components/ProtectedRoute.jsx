@@ -1,23 +1,13 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "./Hooks";
-import { useEffect } from "react";
+import { Navigate, useLocation } from "react-router-dom"
+import { useAuth } from "./Hooks/useAuth"
 
-export const ProtectedRoute = ({children}) => {
-    const navigate = useNavigate();
-    const location = useLocation();
+export const ProtectedRoute = ({ children }) => {
+  const location = useLocation()
+  const { token } = useAuth()
 
-    const { token } = useAuth();
-    
-    useEffect(() => {
-        if (!token) {
-            navigate('/login', {state: {from: location.pathname}, replace: true});
-        }
-    }, [token, location.pathname, navigate])
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} replace />
+  }
 
-    if (!token) {
-        return null;
-    }
-  
-    return children;
+  return children
 }
-

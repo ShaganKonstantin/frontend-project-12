@@ -1,44 +1,39 @@
-import React, { useEffect } from "react";
-import { SignupSchema } from './validation.js';
-import { useFormik } from 'formik';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from "../Hooks/index.jsx";
-import axios from 'axios';
+import { useFormik } from 'formik'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from "../Hooks/useAuth.jsx"
+import axios from 'axios'
+import { SignupSchema } from './validation.js'
 
 export const AuthorizationForm = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { login } = useAuth();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { login } = useAuth()
 
-    useEffect(() => {
-        const token = localStorage.getItem('AuthorizationToken');
-        if(token) {
-            const { from } = location.state || {from: {pathname: '/'}}
-            navigate(from)
-        }
-    }, [location.state, navigate])
-    
-    const formik = useFormik({
-        initialValues: {
-            username: "",
-            password: "",
-        },
-        validationSchema: SignupSchema,
-        onSubmit: async (values, { setSubmitting, setErrors }) => {
-            try {
-                const response = await axios.post('/api/v1/login', values);
-                const { token, username } = response.data;
-                // localStorage.setItem('AuthorizationToken', JSON.stringify(token)); 
-                localStorage.setItem('AuthorizationToken', token); 
-                login(token);
-            // eslint-disable-next-line no-unused-vars
-            } catch (error) {
-                setErrors({ auth: 'Неверные имя пользователя или пароль' })
-            } finally {
-                setSubmitting(false);
-            }
-        }
-    });
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: SignupSchema,
+    onSubmit: async (values, { setSubmitting, setErrors }) => {
+      try {
+        const response = await axios.post('/api/v1/login', values)
+        const { token, username } = response.data;
+        
+        // Вызываем login с токеном
+        login(token, username)
+        
+        // Перенаправляем на предыдущую страницу или на главную
+        const { from } = location.state || { from: { pathname: '/' } }
+        navigate(from.pathname, { replace: true })
+        
+      } catch (error) {
+        setErrors({ auth: 'Неверные имя пользователя или пароль' })
+      } finally {
+        setSubmitting(false)
+      }
+    }
+  })
 
     return (
         <div className="h-100">

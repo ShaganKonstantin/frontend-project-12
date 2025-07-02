@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createSocket } from "../WebSocket/webSocket";
 
 export const getAuthToken = () => {
     return localStorage.getItem('AuthorizationToken');
@@ -17,19 +18,59 @@ export const chatApi = createApi({
         return headers;
         },
      }),
+    tagTypes: ['Messages', 'Channels'],
     endpoints: builder => ({
         getChannels: builder.query({
-            query: () => '/channels'
+            query: () => '/channels',
+            providesTags: ['Channels']
         }),
+
         getMessages: builder.query({
-            query: () => '/messages'
+            query: () => '/messages',
+            providesTags: (result) => result ? [...result.map(({id}) => ({type: 'Messages', id})), 'Messages'] : ['Messages']
         }),
+
         sendMessage: builder.mutation({
             query: (message) => ({
                 url: '/messages',
                 method: 'POST',
                 body: message
-            })
+            }),
+            invalidatesTags: ['Messages']
+        }),
+        
+        subscribeToMessages: builder.query({
+            queryFn: () => ({data: null}), 
+            async onCacheEntryAdded(
+                arg,
+                { cacheDataLoaded, cacheEntryRemoved, dispatch }
+            ) {
+                try{
+                    await cacheDataLoaded;
+                    
+                    const token = getAuthToken();
+                    const socket = createSocket(token);
+
+                    socket.on('newMessage', (message) => {
+                        dispatch(
+                            chatApi.util.updateQueryData(
+                            'getMessages',
+                            undefined,
+                            (draft) => {
+                                if (!draft.some(m => m.id === message.id)) {
+                                    draft.push(message);
+                  }
+                            }
+                            )
+                        )    
+                    });
+
+                    await cacheEntryRemoved;
+                    socket.disconnect();
+                } catch (error) {
+                    console.error('Websocket error', error)
+                }
+            }
         })
     })
 })
@@ -37,5 +78,6 @@ export const chatApi = createApi({
 export const {
     useGetChannelsQuery,
     useGetMessagesQuery,
-    useSendMessageMutation
+    useSendMessageMutation,
+    useSubscribeToMessagesQuery,
 } = chatApi

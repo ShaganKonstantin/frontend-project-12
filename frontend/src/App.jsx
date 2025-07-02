@@ -3,12 +3,10 @@ import { PageNotFound } from './components/NotFound';
 import { AuthorizationForm } from './components/Form/AuthorizationForm.jsx';
 import { HomePage } from './components/HomePage/HomePage.jsx';
 import { ProtectedRoute } from './components/ProtectedRoute.jsx';
-import { AuthProvider } from './components/Slices/AuthSlice.jsx';
+import { AuthProvider } from './components/Providers/AuthProvider.jsx';
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
         <Routes>
           <Route path='/' element={
             <ProtectedRoute>
@@ -18,8 +16,6 @@ function App() {
           <Route path='/login' element={<AuthorizationForm />}/>
           <Route path='*' element={<PageNotFound />}/>
         </Routes>
-      </AuthProvider>
-    </BrowserRouter>
   );
 }
 

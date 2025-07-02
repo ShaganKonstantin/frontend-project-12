@@ -14,7 +14,7 @@ export const createSocket = (token, username) => {
 
   socket.on('connect', () => {
     console.log('Connected to WebSocket')
-  })
+  });
 
   socket.on('connect_error', (err) => {
     console.error('Ошибка подключения к WebSocket', err);
@@ -22,7 +22,7 @@ export const createSocket = (token, username) => {
 
   socket.on('reconnection_attempt', () => {
     console.error('Ошибка переподключения к WebSocket')
-  })
+  });
 
   return socket;
 }
