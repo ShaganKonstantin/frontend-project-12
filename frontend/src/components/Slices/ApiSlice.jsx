@@ -71,6 +71,33 @@ export const chatApi = createApi({
                     console.error('Websocket error', error)
                 }
             }
+        }),
+
+        addChannel: builder.mutation({
+            query: (channel) => ({
+                url: '/channels',
+                method: 'POST',
+                body: channel,
+            }),
+            invalidatesTags: ['Channels'],
+        }),
+
+        renameChannel: builder.mutation({
+            query: ({ id, name }) => ({
+                url: `/channels/${id}`,
+                method: 'PATCH',
+                body: { name },
+            }),
+            invalidatesTags: ['Channels'],
+        }),
+
+        removeChannel: builder.mutation({
+            query: (id) => ({
+                url: `/channels/${id}`,
+                method: 'DELETE',
+                body: { id },
+            }),
+            invalidatesTags: ['Channels'],
         })
     })
 })
@@ -80,4 +107,7 @@ export const {
     useGetMessagesQuery,
     useSendMessageMutation,
     useSubscribeToMessagesQuery,
+    useAddChannelMutation,
+    useRenameChannelMutation,
+    useRemoveChannelMutation,
 } = chatApi
