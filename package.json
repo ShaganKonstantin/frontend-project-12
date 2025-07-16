@@ -11,6 +11,7 @@
   "author": "Konstantin Shagan",
   "license": "ISC",
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4"
+    "@hexlet/chat-server": "^2.0.4",
+    "react-bootstrap": "^2.10.10"
   }
 }

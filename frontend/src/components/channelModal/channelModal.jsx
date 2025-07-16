@@ -44,6 +44,12 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [closeModal]);
 
+  useEffect(() => {
+    if (modal.isOpen && inputRef.current && modal.type !== 'remove') {
+      inputRef.current.focus();
+    }
+  }, [modal.isOpen, modal.type]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (modal.type === 'remove') {
@@ -67,6 +73,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
               onClick={closeModal}
               aria-label='Close'
             ></button>
+          </div>
             <div className='modal-body'>
               {modal.type !== 'remove' ? (
                 <form onSubmit={formik.handleSubmit}>
@@ -89,7 +96,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                     <button 
                       type='button' 
                       onClick={closeModal} 
-                      className='btn btn-secodary me-2' 
+                      className='btn btn-secondary me-2' 
                       disabled={formik.isSubmitting}>Отменить</button>
                     <button 
                       type='submit' 
@@ -119,19 +126,51 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                 </div>
               )}
             </div>
-          </div>
+          
         </div>
       </div>
     </div>
   );
 };
 
-export const ChannelDropdown = (channel, onRemove, onRename) => {
+export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick }) => {
   const dropdownRef = useRef(null);
 
   return (
     <Dropdown ref={dropdownRef}>
-      
+      <Dropdown.Toggle 
+        className='w-100 text-start d-flex justify-content-between align-items-center' 
+        variant={isActive ? 'secondary' : 'light'}
+        onClick={onClick} 
+        id={`dropdown-channel-${channel.id}`}
+        aria-label={`Канал ${channel.name}`}
+      >
+        <span># {channel.name}</span>
+        <span className='caret'></span>
+      </Dropdown.Toggle> 
+
+      <Dropdown.Menu>
+        <Dropdown.Item 
+          onClick={(e) => {
+            e.stopPropagation();
+            onRename(channel)
+          }}
+          aria-label={`Переименовать канал ${channel.name}`}
+        >
+          Переименовать
+        </Dropdown.Item>
+        {channel.removable && (
+          <Dropdown.Item 
+            onClick={(e) => {
+            e.stopPropagation();
+            onRemove(channel)
+          }}
+          aria-label={`Удалить канал ${channel.name}`}
+          >
+            Удалить
+          </Dropdown.Item>
+        )}
+      </Dropdown.Menu>
     </Dropdown>
-  )
-}
+  );
+};
