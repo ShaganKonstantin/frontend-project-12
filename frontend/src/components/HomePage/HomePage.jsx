@@ -27,11 +27,15 @@ export const HomePage = () => {
     const handleRenameChannel = (channel) => openModal('rename', channel);
     const handleRemoveChannel = (channel) => openModal('remove', channel);
 
-    const handleSubmit = async(values, actions) => {
+    const handleSubmit = async (values, actions) => {
+    console.log('Submitting with values:', values);
         try {
             if (modal.type === 'add') {
-                const { data: newChannel } = await addChannel(values).unwrap();
-                setCurrentChannelId(newChannel.id);
+             const response = await addChannel({ name: values.name }).unwrap();
+             if (response && response.id) {
+                setCurrentChannelId(response.id);
+                if (actions?.resetForm) actions.resetForm();
+             }
             } else if (modal.type === 'rename') {
                 await renameChannel({ id: modal.channel.id, name: values.name }).unwrap();
             } else if (modal.type === 'remove') {
@@ -42,13 +46,54 @@ export const HomePage = () => {
                 }
             }
             closeModal();
-        } catch (error){
-            actions.setErrors({ name: 'Ошибка при сохранении канала' });
-            console.error('Ошибка', error)
+        } catch (error) {
+            console.error('Ошибка', error);
+            const errorMessage = error.data?.message || 'Ошибка при сохранении канала.';
+            if (actions?.setErrors) {
+            actions.setErrors({ name: errorMessage });
+            }
         } finally {
+            if (actions?.setSubmitting) {
             actions.setSubmitting(false);
+            }
         }
     }
+
+//     // Для форм (добавление/переименование)
+// const handleFormSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
+//   try {
+//     if (modal.type === 'add') {
+//       const response = await addChannel({ name: values.name }).unwrap();
+//       setCurrentChannelId(response.id);
+//       resetForm();
+//     } else {
+//       await renameChannel({ id: modal.channel.id, name: values.name }).unwrap();
+//     }
+//     closeModal();
+//   } catch (error) {
+//     setErrors({ name: error.data?.message || 'Ошибка при сохранении канала.' });
+//   } finally {
+//     setSubmitting(false);
+//   }
+// };
+
+// // Для удаления
+// const handleRemoveChannel = async () => {
+//   try {
+//     await removeChannel(modal.channel.id).unwrap();
+//     const generalChannel = channels.find(c => c.name === 'general');
+//     setCurrentChannelId(generalChannel?.id);
+//     closeModal();
+//   } catch (error) {
+//     console.error('Ошибка удаления:', error);
+//     // Можно добавить отображение ошибки пользователю
+//   }
+// };
+
+// // В JSX для модалки удаления:
+// <button onClick={handleRemoveChannel} className="btn btn-danger">
+//   Удалить
+// </button>
 
     const {
         data: channels = [],
@@ -86,7 +131,7 @@ export const HomePage = () => {
     return (
         <div className="h-100">
             <div className="h-100" id="chat">
-                <div className="d-flex flex-column h-100">
+                <div className="d-flex flex-column vh-100">
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
                             <a className="navbar-brand" href="/">Hexlet Chat</a>
@@ -94,7 +139,7 @@ export const HomePage = () => {
                         </div>
                     </nav>
                     <div className="container h-100 my-4 overflow-hidden rounded shadow">
-                        <div className="row h-100 bg-white flex-md-row d-flex">
+                        <div className="row h-100 bg-white flex-md-row d-flex" style={{ minWidth: 0 }}>
                             <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
                                 <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
                                     <b>Каналы</b>
@@ -129,28 +174,27 @@ export const HomePage = () => {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="col p-0 h-100">
-                                <div className="d-flex flex-column h-100">
-                                    <div className="bg-light mb-4 p-3 shadow-sm small">
-                                            {currentChannelId ? (
-                                                <>
-                                                    <p className="m-0">
-                                                        <b className="m-0">#{channels.find((c) => c.id === currentChannelId)?.name}</b>
-                                                    </p>
-                                                    <div className="flex-grow-1 overflow-auto p-3">
-                                                        {messageToMatchChannel.map((message) => (
-                                                            <div key={message.id} id={message.id} className="mb-3">
-                                                                <strong>{message.username} : </strong> {message.body}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                    <div className="p-3 border-top">
-                                                        <MessageForm channelId={currentChannelId}/>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <div className="text-center mt-5">Выберите канал для общения</div>
-                                            )}
+                            <div className="col p-0 h-100 d-flex flex-column" style={{ minWidth: 0 }}>
+                                <div className="d-flex flex-column h-100" style={{ minWidth: 0 }}>
+                                    {/*Заголовок канала*/}
+                                    <div className="bg-light mb-4 p-3 shadow-sm small" style={{ flexShrink: 0 }}>
+                                    <p className="m-0 text-truncate">
+                                        <b className="m-0"># {channels.find((c) => c.id === currentChannelId)?.name}</b>
+                                    </p>
+                                    </div>
+
+                                    {/*Сообщения*/}
+                                    <div className="flex-grow-1 overflow-auto bg-white p-3">
+                                    {messageToMatchChannel.map((message) => (
+                                        <div key={message.id} className="mb-3 text-break">
+                                        <strong>{message.username}: </strong> {message.body}
+                                        </div>
+                                    ))}
+                                    </div>
+
+                                    {/*Форма ввода*/}
+                                    <div className="p-3 border-top bg-white" style={{ flexShrink: 0 }}>
+                                    <MessageForm channelId={currentChannelId}/>
                                     </div>
                                 </div>
                             </div>

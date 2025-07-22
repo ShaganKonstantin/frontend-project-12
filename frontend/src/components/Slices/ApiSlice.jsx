@@ -77,9 +77,18 @@ export const chatApi = createApi({
             query: (channel) => ({
                 url: '/channels',
                 method: 'POST',
-                body: channel,
+                body: { name: channel.name },
             }),
+            transformResponse: (response) => {
+                if (!response.id) {
+                    throw new Error('Неверный формат ответа сервера');
+                }
+                return response;
+            },
             invalidatesTags: ['Channels'],
+            transformErrorResponse: (response) => {
+                return response.data;
+            }
         }),
 
         renameChannel: builder.mutation({
@@ -89,6 +98,9 @@ export const chatApi = createApi({
                 body: { name },
             }),
             invalidatesTags: ['Channels'],
+            transformErrorResponse: (response) => {
+                return response.data;
+            }
         }),
 
         removeChannel: builder.mutation({
@@ -98,6 +110,9 @@ export const chatApi = createApi({
                 body: { id },
             }),
             invalidatesTags: ['Channels'],
+            transformErrorResponse: (response) => {
+                return response.data;
+            }
         })
     })
 })

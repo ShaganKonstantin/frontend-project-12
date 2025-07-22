@@ -1,6 +1,6 @@
 import { channelModalSchema } from './validation.js';
 import { useFormik } from 'formik';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Dropdown } from 'react-bootstrap';
 
 export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
@@ -15,7 +15,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
     enableReinitialize: true, // чтобы форма подхватывала актуальное имя модалки, если открывается модалка для разных каналов
   });
 
-  const inputRef = useRef(null); 
+  const inputRef = useRef(null);
 
   const getModalTitle = () => {
     switch(modal.type) {
@@ -37,7 +37,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
-        closeModal()
+        closeModal();
       };
     };
     document.addEventListener('keydown', handleKeyDown);
@@ -59,6 +59,11 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
     }
   }
 
+  const handleClose = () => {
+    formik.resetForm();
+    closeModal();
+  }
+
   if(!modal.isOpen) return null;
 
   return (
@@ -70,7 +75,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
             <button 
               className='btn-close'
               type='button'
-              onClick={closeModal}
+              onClick={handleClose}
               aria-label='Close'
             ></button>
           </div>
@@ -95,13 +100,13 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                   <div className='d-flex justify-content-end mt-3'>
                     <button 
                       type='button' 
-                      onClick={closeModal} 
+                      onClick={handleClose} 
                       className='btn btn-secondary me-2' 
                       disabled={formik.isSubmitting}>Отменить</button>
                     <button 
                       type='submit' 
                       className={`btn btn-${getButtonStyle()} me-2`} 
-                      disabled={formik.dirty || formik.isSubmitting || !formik.isValid}
+                      disabled={formik.isSubmitting || !formik.isValid}
                     >
                       {formik.isSubmitting ? 'Отправляется...' : 'Отправить'}
                     </button>
@@ -113,7 +118,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                   <div className='d-flex justify-content-end'>
                     <button 
                       type='button' 
-                      onClick={closeModal} 
+                      onClick={handleClose} 
                       className='btn btn-secodary me-2'
                     >
                       Отменить
@@ -134,43 +139,93 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
 };
 
 export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick }) => {
-  const dropdownRef = useRef(null);
+  const [showMenu, setShowMenu] = useState(false);
+  const showDropdown = channel.removable === true;
 
   return (
-    <Dropdown ref={dropdownRef}>
-      <Dropdown.Toggle 
-        className='w-100 text-start d-flex justify-content-between align-items-center' 
-        variant={isActive ? 'secondary' : 'light'}
-        onClick={onClick} 
-        id={`dropdown-channel-${channel.id}`}
-        aria-label={`Канал ${channel.name}`}
+    // <Dropdown ref={dropdownRef}>
+    //   <Dropdown.Toggle 
+    //     className='w-100 text-start text-truncate d-flex justify-content-between align-items-center' 
+    //     variant={isActive ? 'secondary' : 'light'}
+    //     onClick={onClick} 
+    //     id={`dropdown-channel-${channel.id}`}
+    //     aria-label={`Канал ${channel.name}`}
+    //   >
+    //     <span># {channel.name}</span>
+    //     {showDropdown && <span className='caret'></span>}
+    //   </Dropdown.Toggle> 
+
+    //   {showDropdown && (
+    //     <Dropdown.Menu>
+    //       <Dropdown.Item 
+    //         onClick={(e) => {
+    //           e.stopPropagation();
+    //           onRename(channel)
+    //         }}
+    //         aria-label={`Переименовать канал ${channel.name}`}
+    //       >
+    //         Переименовать
+    //       </Dropdown.Item>
+        
+    //       <Dropdown.Item 
+    //         onClick={(e) => {
+    //           e.stopPropagation();
+    //           onRemove(channel)
+    //         }}
+    //         aria-label={`Удалить канал ${channel.name}`}
+    //         >
+    //           Удалить
+    //         </Dropdown.Item>
+    //   </Dropdown.Menu>
+    //   )}
+    // </Dropdown>
+
+    <div className='d-flex align-items-center w-100'>
+      <button 
+        className={`btn w-100 text-start text-truncate ${isActive ? 'btn-secondary' : 'btn-light'}`}
+        onClick={onClick}
+        aria-label={`Перейти в канал ${channel.name}`}
       >
         <span># {channel.name}</span>
-        <span className='caret'></span>
-      </Dropdown.Toggle> 
-
-      <Dropdown.Menu>
-        <Dropdown.Item 
-          onClick={(e) => {
-            e.stopPropagation();
-            onRename(channel)
-          }}
-          aria-label={`Переименовать канал ${channel.name}`}
+      </button>
+      {/*Кнопка для редактируемых каналов*/}
+      {showDropdown && (
+        <Dropdown
+          show={showMenu}
+          onToggle={(isOpen) => setShowMenu(isOpen)}
         >
-          Переименовать
-        </Dropdown.Item>
-        {channel.removable && (
-          <Dropdown.Item 
-            onClick={(e) => {
-            e.stopPropagation();
-            onRemove(channel)
-          }}
-          aria-label={`Удалить канал ${channel.name}`}
+          <Dropdown.Toggle
+            split
+            variant={isActive ? 'secondary' : 'light'}
+            className='dropdown-toggle-split'
+            aria-label='Управление каналом'
           >
-            Удалить
-          </Dropdown.Item>
-        )}
-      </Dropdown.Menu>
-    </Dropdown>
+            <span className='visually-hidden'>Меню канала</span>
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item
+              onClick={(e) => {
+                e.stopPropagation();
+                onRename(channel);
+              }}
+              aria-label={`Переименовать канал ${channel.name}`}
+            >
+              Переименовать
+            </Dropdown.Item>
+
+            <Dropdown.Item
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemove(channel);
+              }}
+              aria-label={`Удалить канал ${channel.name}`}
+            >
+              Удалить
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      )}
+    </div>
   );
 };

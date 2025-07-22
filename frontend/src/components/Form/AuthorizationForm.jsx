@@ -86,7 +86,7 @@ export const AuthorizationForm = () => {
                                                   className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
                                                   required
                                                 />
-                                                <label htmlFor="username">Пароль</label>
+                                                <label htmlFor="password">Пароль</label>
                                                 {formik.touched.password && formik.errors.password && (
                                                     <div className="invalid-feedback">{formik.errors.password}</div>
                                                 )}
