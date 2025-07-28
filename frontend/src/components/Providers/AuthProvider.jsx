@@ -31,13 +31,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (token && user?.username) {
-      if (location.pathname === '/login') {
+      if (location.pathname === '/login' || location.pathname === '/signup') {
         navigate('/', { replace: true });
       }
     } else {
-      localStorage.removeItem('AuthorizationToken');
-      localStorage.removeItem('Username');
-      if (location.pathname !== '/login') {
+      // localStorage.removeItem('AuthorizationToken');
+      // localStorage.removeItem('Username');
+      
+      const allowedRoutes = ['/login', '/signup'];
+
+      if (!allowedRoutes.includes(location.pathname)) {
         navigate('/login', { replace: true });
       }
     }

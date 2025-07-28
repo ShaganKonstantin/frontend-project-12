@@ -143,43 +143,6 @@ export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick
   const showDropdown = channel.removable === true;
 
   return (
-    // <Dropdown ref={dropdownRef}>
-    //   <Dropdown.Toggle 
-    //     className='w-100 text-start text-truncate d-flex justify-content-between align-items-center' 
-    //     variant={isActive ? 'secondary' : 'light'}
-    //     onClick={onClick} 
-    //     id={`dropdown-channel-${channel.id}`}
-    //     aria-label={`Канал ${channel.name}`}
-    //   >
-    //     <span># {channel.name}</span>
-    //     {showDropdown && <span className='caret'></span>}
-    //   </Dropdown.Toggle> 
-
-    //   {showDropdown && (
-    //     <Dropdown.Menu>
-    //       <Dropdown.Item 
-    //         onClick={(e) => {
-    //           e.stopPropagation();
-    //           onRename(channel)
-    //         }}
-    //         aria-label={`Переименовать канал ${channel.name}`}
-    //       >
-    //         Переименовать
-    //       </Dropdown.Item>
-        
-    //       <Dropdown.Item 
-    //         onClick={(e) => {
-    //           e.stopPropagation();
-    //           onRemove(channel)
-    //         }}
-    //         aria-label={`Удалить канал ${channel.name}`}
-    //         >
-    //           Удалить
-    //         </Dropdown.Item>
-    //   </Dropdown.Menu>
-    //   )}
-    // </Dropdown>
-
     <div className='d-flex align-items-center w-100'>
       <button 
         className={`btn w-100 text-start text-truncate ${isActive ? 'btn-secondary' : 'btn-light'}`}
