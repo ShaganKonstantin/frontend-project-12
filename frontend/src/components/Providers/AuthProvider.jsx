@@ -35,8 +35,8 @@ export const AuthProvider = ({ children }) => {
         navigate('/', { replace: true });
       }
     } else {
-      // localStorage.removeItem('AuthorizationToken');
-      // localStorage.removeItem('Username');
+      localStorage.removeItem('AuthorizationToken');
+      localStorage.removeItem('Username');
       
       const allowedRoutes = ['/login', '/signup'];
 

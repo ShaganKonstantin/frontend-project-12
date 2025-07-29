@@ -51,7 +51,7 @@ export const AuthorizationForm = () => {
                                 <div className="card shadow-sm d-flex">
                                     <div className="card-body row p-5 d-flex">
                                         <div className="col-12 col-md-6 d-flex align-items-center justify-content-center d-flex">
-                                            <img src="/loginImage.jpg" alt="Войти" className="rounded-circle" />
+                                            <img src="https://frontend-chat-ru.hexlet.app/assets/avatar-DIE1AEpS.jpg" alt="Войти" className="rounded-circle" />
                                         </div>
                                         <form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
                                             <h1 className="text-center mb-4">Войти</h1>

@@ -94,6 +94,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                     id='channelName'
                     aria-label='Имя канала'
                   />
+                  <label htmlFor="channelName" className='visually-hidden'>Имя канала</label>
                   {formik.touched.name && formik.errors.name && (
                     <div className='invalid-feedback'>{formik.errors.name}</div>
                   )}
@@ -102,11 +103,14 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                       type='button' 
                       onClick={handleClose} 
                       className='btn btn-secondary me-2' 
-                      disabled={formik.isSubmitting}>Отменить</button>
+                      disabled={formik.isSubmitting}
+                    >
+                      Отменить
+                    </button>
                     <button 
                       type='submit' 
                       className={`btn btn-${getButtonStyle()} me-2`} 
-                      disabled={formik.isSubmitting || !formik.isValid}
+                      disabled={formik.isSubmitting}
                     >
                       {formik.isSubmitting ? 'Отправляется...' : 'Отправить'}
                     </button>
@@ -131,7 +135,6 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                 </div>
               )}
             </div>
-          
         </div>
       </div>
     </div>

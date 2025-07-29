@@ -59,42 +59,6 @@ export const HomePage = () => {
         }
     }
 
-//     // Для форм (добавление/переименование)
-// const handleFormSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
-//   try {
-//     if (modal.type === 'add') {
-//       const response = await addChannel({ name: values.name }).unwrap();
-//       setCurrentChannelId(response.id);
-//       resetForm();
-//     } else {
-//       await renameChannel({ id: modal.channel.id, name: values.name }).unwrap();
-//     }
-//     closeModal();
-//   } catch (error) {
-//     setErrors({ name: error.data?.message || 'Ошибка при сохранении канала.' });
-//   } finally {
-//     setSubmitting(false);
-//   }
-// };
-
-// // Для удаления
-// const handleRemoveChannel = async () => {
-//   try {
-//     await removeChannel(modal.channel.id).unwrap();
-//     const generalChannel = channels.find(c => c.name === 'general');
-//     setCurrentChannelId(generalChannel?.id);
-//     closeModal();
-//   } catch (error) {
-//     console.error('Ошибка удаления:', error);
-//     // Можно добавить отображение ошибки пользователю
-//   }
-// };
-
-// // В JSX для модалки удаления:
-// <button onClick={handleRemoveChannel} className="btn btn-danger">
-//   Удалить
-// </button>
-
     const {
         data: channels = [],
         isLoading: isChannelsLoading,
