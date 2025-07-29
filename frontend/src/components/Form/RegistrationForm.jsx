@@ -66,8 +66,12 @@ export const RegistrationForm = () => {
                           required
                         />
                         <label className='form-label' htmlFor="username">Имя пользователя</label>
-                        {formik.touched.username && formik.errors.username && (
-                          <div className="invalid-tooltip">Обязательное поле</div>
+                        {formik.touched.username && formik.errors.username  && (
+                          <div className="invalid-tooltip">
+                            {formik.errors.username === 'Обязательное поле' 
+                              ? formik.errors.username 
+                              : 'Пользователь с таким именем существует.'}
+                          </div>
                         )}
                       </div>
                       <div className="form-floating mb-3">
