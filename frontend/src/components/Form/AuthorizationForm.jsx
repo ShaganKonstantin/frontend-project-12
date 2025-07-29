@@ -65,15 +65,15 @@ export const AuthorizationForm = () => {
                                                   autoComplete="username"
                                                   placeholder="Ваш ник"
                                                   id="username"
-                                                  className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
+                                                  className={`form-control ${formik.touched.username && formik.errors.username || formik.errors.auth ? 'is-invalid' : ''}`}
                                                   required
                                                 />
                                                 <label htmlFor="username">Ваш ник</label>
                                                 {formik.touched.username && formik.errors.username && (
-                                                    <div className="invalid-feedback">{formik.errors.username}</div>
+                                                    <div className="invalid-tooltip">{formik.errors.username}</div>
                                                 )}
                                             </div>
-                                            <div className="form-floating mb-4">
+                                            <div className="form-floating mb-4" style={{ position: 'relative' }}>
                                                 <input 
                                                   onChange={formik.handleChange}
                                                   onBlur={formik.handleBlur}
@@ -83,12 +83,22 @@ export const AuthorizationForm = () => {
                                                   autoComplete="current-password"
                                                   placeholder="Пароль"
                                                   id="password"
-                                                  className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
+                                                  className={`form-control ${formik.touched.password && formik.errors.password || formik.errors.auth ? 'is-invalid' : ''}`}
                                                   required
                                                 />
                                                 <label htmlFor="password">Пароль</label>
                                                 {formik.touched.password && formik.errors.password && (
-                                                    <div className="invalid-feedback">{formik.errors.password}</div>
+                                                    <div className="invalid-tooltip">{formik.errors.password}</div>
+                                                )}
+                                                {formik.errors.auth && (
+                                                <div className="invalid-tooltip"
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: '100%',
+                                                            left: 0
+                                                        }}
+                                                    >{formik.errors.auth}
+                                                    </div>
                                                 )}
                                             </div>
                                             <button className="w-100 mb-3 btn btn-outline-primary" type="submit">{formik.isSubmitting ? 'Вход...' : 'Войти'}</button>
