@@ -3,11 +3,14 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from "../Hooks/useAuth.jsx"
 import axios from 'axios'
 import { SignupSchema } from './validation.js'
+import { useTranslation } from 'react-i18next'
 
 export const AuthorizationForm = () => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { login } = useAuth()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -54,7 +57,7 @@ export const AuthorizationForm = () => {
                                             <img src="https://frontend-chat-ru.hexlet.app/assets/avatar-DIE1AEpS.jpg" alt="Войти" className="rounded-circle" />
                                         </div>
                                         <form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
-                                            <h1 className="text-center mb-4">Войти</h1>
+                                            <h1 className="text-center mb-4">{t('loginTitle')}</h1>
                                             <div className="form-floating mb-3">
                                                 <input 
                                                   onChange={formik.handleChange}
@@ -68,7 +71,7 @@ export const AuthorizationForm = () => {
                                                   className={`form-control ${formik.touched.username && formik.errors.username || formik.errors.auth ? 'is-invalid' : ''}`}
                                                   required
                                                 />
-                                                <label htmlFor="username">Ваш ник</label>
+                                                <label htmlFor="username">{t('loginNamePlaceholder')}</label>
                                                 {formik.touched.username && formik.errors.username && (
                                                     <div className="invalid-tooltip">{formik.errors.username}</div>
                                                 )}
@@ -86,7 +89,7 @@ export const AuthorizationForm = () => {
                                                   className={`form-control ${formik.touched.password && formik.errors.password || formik.errors.auth ? 'is-invalid' : ''}`}
                                                   required
                                                 />
-                                                <label htmlFor="password">Пароль</label>
+                                                <label htmlFor="password">{t('loginPasswordPlaceholder')}</label>
                                                 {formik.touched.password && formik.errors.password && (
                                                     <div className="invalid-tooltip">{formik.errors.password}</div>
                                                 )}
@@ -101,13 +104,13 @@ export const AuthorizationForm = () => {
                                                     </div>
                                                 )}
                                             </div>
-                                            <button className="w-100 mb-3 btn btn-outline-primary" type="submit">{formik.isSubmitting ? 'Вход...' : 'Войти'}</button>
+                                            <button className="w-100 mb-3 btn btn-outline-primary" type="submit">{formik.isSubmitting ? t('isLoggingButton') : t('loginButton')}</button>
                                         </form>
                                     </div>
                                     <div className="card-footer p-4">
                                         <div className="text-center">
-                                            <span>Нет аккаунта?</span>
-                                            <a href="/signup">Регистрация</a>
+                                            <span>{t('hasAccount')}</span>
+                                            <a href="/signup">{t('registration')}</a>
                                         </div>
                                     </div>
                                 </div>

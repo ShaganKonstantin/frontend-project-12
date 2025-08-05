@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from "../Hooks/useAuth.jsx"
 import axios from 'axios'
 import { RegistrationSchema } from './validation.js'
+import { useTranslation } from 'react-i18next'
 
 export const RegistrationForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -23,9 +25,9 @@ export const RegistrationForm = () => {
         navigate('/', { replace: true })
       } catch (error) {
         if (error.response?.status === 409) {
-          setErrors({ username: 'Пользователь с таким именем существует.' })
+          setErrors({ username: t('error.userExists') })
         } else {
-          setErrors({ auth: 'Ошибка регистрации.' })
+          setErrors({ auth: t('error.registrationError') })
         }
       } finally {
         setSubmitting(false)
@@ -51,7 +53,7 @@ export const RegistrationForm = () => {
                       <img src="https://frontend-chat-ru.hexlet.app/assets/avatar_1-D7Cot-zE.jpg" alt="Регистрация" className='rounded-circle'/>
                     </div>
                     <form onSubmit={formik.handleSubmit} className='w-50'>
-                      <h1 className='text-center mb-4'>Регистрация</h1>
+                      <h1 className='text-center mb-4'>{t('registrationTitle')}</h1>
                       <div className="form-floating mb-3">
                         <input 
                           onChange={formik.handleChange}
@@ -60,7 +62,7 @@ export const RegistrationForm = () => {
                           type="text"
                           name="username"
                           autoComplete="username"
-                          placeholder="От 3 до 20 символов"
+                          placeholder={"От 3 до 20 символов"}
                           id="username"
                           className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
                           required
@@ -89,7 +91,7 @@ export const RegistrationForm = () => {
                         />
                         <label htmlFor="password" className='form-label'>Пароль</label>
                         {formik.touched.password && formik.errors.password && (
-                          <div className="invalid-tooltip">Не менее 6 символовь</div>
+                          <div className="invalid-tooltip">Не менее 6 символов</div>
                         )}
                       </div>
                       <div className="form-floating mb-4">

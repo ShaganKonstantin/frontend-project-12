@@ -1,25 +1,26 @@
 import * as Yup from 'yup';
+import i18n from '../../utils/i18n/i18n.jsx';
 
 export const SignupSchema = Yup.object().shape({
     username: Yup.string()
-        .min(5, "Логин должен содержать минимум 5 символов.")
-        .required("Заполните поле."),
+        .min(5, i18n.t('errors.loginUsernameMin'))
+        .required(i18n.t('errors.fillField')),
     password: Yup.string()
-        .min(5, "Пароль должен содержать минимум 5 символов.")
-        .required("Заполните поле.")
+        .min(5, i18n.t('errors.loginPasswordMin'))
+        .required(i18n.t('errors.fillField'))
 })
 
 export const RegistrationSchema = Yup.object().shape({
     username: Yup.string()
-        .min(3, "Имя пользователя должно содержать минимум 3 символа")
-        .max(20, "Имя пользователя должно содержать максимум 20 символов")
-        .required("Обязательное поле"),
+        .min(3, i18n.t('errors.registrationUsernameMin'))
+        .max(20, i18n.t('errors.registrationUsernameMax'))
+        .required(i18n.t('errors.fillField')),
     password: Yup.string()
-        .min(6, "Пароль должен содержать минимум 6 символов.")
-        .max(20, "Пароль должен содержать максимум 20 символов.")
-        .required("Заполните поле."),
+        .min(6, i18n.t('errors.registrationPasswordMin'))
+        .max(20, i18n.t('errors.registrationPasswordMax'))
+        .required(i18n.t('errors.fillField')),
     confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Пароли должны совпадать.")
-        .required("Подтвердите пароль.")
+        .oneOf([Yup.ref("password"), null], i18n.t('errors.passwordMatch'))
+        .required(i18n.t('errors.passwordConfirmation'))
 })
 

@@ -11,6 +11,7 @@ import {
 import { MessageForm } from "../Form/MessageForm";
 import { useChannelModal } from "../Hooks/useChannelModal";
 import { ChannelDropdown, ChannelModal } from "../channelModal/channelModal";
+import { useTranslation } from "react-i18next";
 
 export const HomePage = () => {
     const { logout, token } = useAuth();
@@ -19,6 +20,7 @@ export const HomePage = () => {
     const [addChannel] = useAddChannelMutation();
     const [renameChannel] = useRenameChannelMutation();
     const [removeChannel] = useRemoveChannelMutation();
+    const { t } = useTranslation();
 
     const handleAddChannel = () => {
         console.log('Кнопка работает')
@@ -48,7 +50,7 @@ export const HomePage = () => {
             closeModal();
         } catch (error) {
             console.error('Ошибка', error);
-            const errorMessage = error.data?.message || 'Ошибка при сохранении канала.';
+            const errorMessage = error.data?.message || t('saveChError');
             if (actions?.setErrors) {
             actions.setErrors({ name: errorMessage });
             }
@@ -99,14 +101,14 @@ export const HomePage = () => {
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
                             <a className="navbar-brand" href="/">Hexlet Chat</a>
-                            <button onClick={logout} className="btn btn-primary" type="button">Выйти</button>
+                            <button onClick={logout} className="btn btn-primary" type="button">{t('logoutButton')}</button>
                         </div>
                     </nav>
                     <div className="container h-100 my-4 overflow-hidden rounded shadow">
                         <div className="row h-100 bg-white flex-md-row d-flex" style={{ minWidth: 0 }}>
                             <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
                                 <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-                                    <b>Каналы</b>
+                                    <b>{t('channels')}</b>
                                     <button  
                                         onClick={handleAddChannel} 
                                         className="p-0 text-primary btn btn-group-vertical" 
