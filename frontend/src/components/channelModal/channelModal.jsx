@@ -2,8 +2,11 @@ import { channelModalSchema } from './validation.js';
 import { useFormik } from 'formik';
 import { useEffect, useState, useRef } from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
+  const { t } = useTranslation();
+
   const formik = useFormik({
     initialValues: {
       name: modal.channel?.name || ''
@@ -20,11 +23,11 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
   const getModalTitle = () => {
     switch(modal.type) {
       case 'add': 
-        return 'Добавить канал';
+        return t('modalAddChTitle');
       case 'rename':
-        return 'Переименовать канал';
+        return t('modalRenameChTitle');
       case 'remove':
-        return 'Удалить канал';
+        return t('modalDeleteChTitle');
       default:
         return '';
     }
@@ -92,9 +95,9 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                     value={formik.values.name}
                     required
                     id='channelName'
-                    aria-label='Имя канала'
+                    aria-label={t('channelName')}
                   />
-                  <label htmlFor="channelName" className='visually-hidden'>Имя канала</label>
+                  <label htmlFor="channelName" className='visually-hidden'>{t('channelName')}</label>
                   {formik.touched.name && formik.errors.name && (
                     <div className='invalid-feedback'>{formik.errors.name}</div>
                   )}
@@ -105,32 +108,32 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                       className='btn btn-secondary me-2' 
                       disabled={formik.isSubmitting}
                     >
-                      Отменить
+                      {t('modalCancelButton')}
                     </button>
                     <button 
                       type='submit' 
                       className={`btn btn-${getButtonStyle()} me-2`} 
                       disabled={formik.isSubmitting}
                     >
-                      {formik.isSubmitting ? 'Отправляется...' : 'Отправить'}
+                      {formik.isSubmitting ? t('modalSendingButton') : t('modalSendButton')}
                     </button>
                   </div>
                 </form>
               ) : (
                 <div>
-                  <p className=''>Уверены?</p>
+                  <p className=''>{t('modalDeleteChConfirmation')}</p>
                   <div className='d-flex justify-content-end'>
                     <button 
                       type='button' 
                       onClick={handleClose} 
                       className='btn btn-secodary me-2'
                     >
-                      Отменить
+                      {t('modalCancelButton')}
                     </button>
                     <button 
                       type='button' 
                       onClick={handleSubmit} 
-                      className='btn btn-danger me-2'>Удалить</button>
+                      className='btn btn-danger me-2'>{t('modalDeleteChButton')}</button>
                   </div>
                 </div>
               )}
@@ -144,6 +147,8 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
 export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick }) => {
   const [showMenu, setShowMenu] = useState(false);
   const showDropdown = channel.removable === true;
+
+  const { t } = useTranslation();
 
   return (
     <div className='d-flex align-items-center w-100'>
@@ -166,7 +171,7 @@ export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick
             className='dropdown-toggle-split'
             aria-label='Управление каналом'
           >
-            <span className='visually-hidden'>Меню канала</span>
+            <span className='visually-hidden'>{t('channelMenu')}</span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
@@ -177,7 +182,7 @@ export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick
               }}
               aria-label={`Переименовать канал ${channel.name}`}
             >
-              Переименовать
+              {t('modalRenameChTitle')}
             </Dropdown.Item>
 
             <Dropdown.Item
@@ -187,7 +192,7 @@ export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick
               }}
               aria-label={`Удалить канал ${channel.name}`}
             >
-              Удалить
+              {t('dropdownDelete')}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

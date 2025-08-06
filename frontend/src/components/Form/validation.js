@@ -12,8 +12,8 @@ export const SignupSchema = Yup.object().shape({
 
 export const RegistrationSchema = Yup.object().shape({
     username: Yup.string()
-        .min(3, i18n.t('errors.registrationUsernameMin'))
-        .max(20, i18n.t('errors.registrationUsernameMax'))
+        .min(3, i18n.t('nameLength'))
+        .max(20, i18n.t('nameLength'))
         .required(i18n.t('errors.fillField')),
     password: Yup.string()
         .min(6, i18n.t('errors.registrationPasswordMin'))

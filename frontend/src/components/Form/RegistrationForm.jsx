@@ -25,9 +25,9 @@ export const RegistrationForm = () => {
         navigate('/', { replace: true })
       } catch (error) {
         if (error.response?.status === 409) {
-          setErrors({ username: t('error.userExists') })
+          setErrors({ username: t('errors.userExists') })
         } else {
-          setErrors({ auth: t('error.registrationError') })
+          setErrors({ auth: t('errors.registrationError') })
         }
       } finally {
         setSubmitting(false)
@@ -62,17 +62,15 @@ export const RegistrationForm = () => {
                           type="text"
                           name="username"
                           autoComplete="username"
-                          placeholder={"От 3 до 20 символов"}
+                          placeholder={t('nameLength')}
                           id="username"
                           className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
                           required
                         />
-                        <label className='form-label' htmlFor="username">Имя пользователя</label>
+                        <label className='form-label' htmlFor="username">{t('registrationUsernamePlaceholder')}</label>
                         {formik.touched.username && formik.errors.username  && (
                           <div className="invalid-tooltip">
-                            {formik.errors.username === 'Обязательное поле' 
-                              ? formik.errors.username 
-                              : 'Пользователь с таким именем существует.'}
+                            {formik.errors.username}
                           </div>
                         )}
                       </div>
@@ -84,14 +82,14 @@ export const RegistrationForm = () => {
                           type="password"
                           name="password"
                           autoComplete="new-password"
-                          placeholder="Не менее 6 символов"
+                          placeholder={t('errors.sixCharsMin')}
                           id="password"
                           className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
                           required
                         />
-                        <label htmlFor="password" className='form-label'>Пароль</label>
+                        <label htmlFor="password" className='form-label'>{t('registrationPasswordPlaceholder')}</label>
                         {formik.touched.password && formik.errors.password && (
-                          <div className="invalid-tooltip">Не менее 6 символов</div>
+                          <div className="invalid-tooltip">{t('errors.sixCharsMin')}</div>
                         )}
                       </div>
                       <div className="form-floating mb-4">
@@ -102,17 +100,17 @@ export const RegistrationForm = () => {
                           type="password"
                           name="confirmPassword"
                           autoComplete="new-password"
-                          placeholder="Пароли должны совпадать"
+                          placeholder={t('errors.passwordMatch')}
                           id="confirmPassword"
                           className={`form-control ${formik.touched.confirmPassword && formik.errors.confirmPassword ? 'is-invalid' : ''}`}
                           required
                         />
-                        <label htmlFor="confirmPassword" className='form-label'>Подтвердите пароль</label>
+                        <label htmlFor="confirmPassword" className='form-label'>{t('errors.passwordConfirmation')}</label>
                         {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-                          <div className="invalid-tooltip">Пароли должны совпадать</div>
+                          <div className="invalid-tooltip">{t('errors.passwordMatch')}</div>
                         )}
                       </div>
-                      <button type='submit' className='w-100 btn btn-outline-primary' disabled={formik.isSubmitting}>Зарегистрироваться</button>
+                      <button type='submit' className='w-100 btn btn-outline-primary' disabled={formik.isSubmitting}>{t('registrationButton')}</button>
                     </form>
                   </div>
                 </div>

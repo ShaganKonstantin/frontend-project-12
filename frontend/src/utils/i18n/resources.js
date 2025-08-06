@@ -1,6 +1,7 @@
 export const resources = {
   en: {
     translation: {
+      nameLength: "Must contain from 3 to 20 characters.",
       // Страница логина
       loginTitle: "Log in",
       loginNamePlaceholder: "Your nickname",
@@ -19,9 +20,13 @@ export const resources = {
       registrationPasswordPlaceholder: "Password",
       confirmPassword: "Confirm password",
       registrationButton: "Sign in",
+      // Модалка
+      channelName: "Channel name",
+      channelMenu: "Channel menu",
       // Модалка-кнопка отмены
       modalCancelButton: "Cancel",
       //Модалка-кнопка отправки
+      modalSendingButton: "Sending...",
       modalSendButton: "Send",
       // Модалка-добавить канал
       modalAddChTitle: "Add channel",
@@ -52,14 +57,15 @@ export const resources = {
         passwordConfirmation: "Confirm your password.",
         userExists: "User with this name already exists.",
         registrationError: "Registration error.",
+        sixCharsMin: "Must contain at least 6 characters.",
         // Ошибки в модалках
-        modalLength: "Must contain from 3 to 20 characters.",
         enterChName: "Enter channel name.",
       }
     }
   },
   ru: {
     translation: {
+      nameLength: "От 3 to 20 символов.",
       // Страница логина
       loginTitle: "Войти",
       loginNamePlaceholder: "Ваш ник",
@@ -78,9 +84,13 @@ export const resources = {
       registrationPasswordPlaceholder: "Пароль",
       confirmPassword: "Подтвердите пароль",
       registrationButton: "Зарегистрироваться",
+      // Модалка
+      channelName: "Имя канала",
+      channelMenu: "Меню канала",
       // Модалка-кнопка отмены
       modalCancelButton: "Отменить",
       //Модалка-кнопка отправки
+      modalSendingButton: "Отправляется...",
       modalSendButton: "Отправить",
       // Модалка-добавить канал
       modalAddChTitle: "Добавить канал",
@@ -111,8 +121,8 @@ export const resources = {
         passwordConfirmation: "Подтвердите пароль.",
         userExists: "Пользователь с таким именем существует.",
         registrationError: "Ошибка регистрации.",
+        sixCharsMin: "Не менее 6 символов.",
         // Ошибки в модалках
-        modalLength: "От 3 до 20 смиволов.",
         enterChName: "Введите имя канала.",
       }
     }
