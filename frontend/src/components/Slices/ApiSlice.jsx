@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { createSocket } from "../WebSocket/webSocket";
+import { createSocket } from "../WebSocket/webSocket"; 
+import { toast } from 'react-toastify';
+import i18n from '../../utils/i18n/i18n';
 
 export const getAuthToken = () => {
     return localStorage.getItem('AuthorizationToken');
@@ -22,11 +24,19 @@ export const chatApi = createApi({
     endpoints: builder => ({
         getChannels: builder.query({
             query: () => '/channels',
+            transformErrorResponse: (response) => {
+                toast.error(i18n.t('errors.channelsLoadError'));
+                return response;
+            },
             providesTags: ['Channels']
         }),
 
         getMessages: builder.query({
             query: () => '/messages',
+            transformErrorResponse: (response) => {
+                toast.error(i18n.t('errors.messagesLoadError'));
+                return response;
+            },
             providesTags: (result) => result ? [...result.map(({id}) => ({type: 'Messages', id})), 'Messages'] : ['Messages']
         }),
 
@@ -36,6 +46,10 @@ export const chatApi = createApi({
                 method: 'POST',
                 body: message
             }),
+            transformErrorResponse: (response) => {
+                toast.error(i18n.t('errors.messageSendError'));
+                return response;
+            },
             invalidatesTags: ['Messages']
         }),
         
@@ -50,6 +64,16 @@ export const chatApi = createApi({
                     
                     const token = getAuthToken();
                     const socket = createSocket(token);
+                    
+                    socket.on('connect_error', (err) => {
+                        toast.error(i18n.t('errors.socketConnectError'));
+                        console.error('Websocket connect error:', err)
+                    });
+
+                    socket.on('error', (err) => {
+                        toast.error(i18n.t('errors.socketError'));
+                        console.error('Websocket error:', err)
+                    });
 
                     socket.on('newMessage', (message) => {
                         dispatch(
@@ -59,7 +83,7 @@ export const chatApi = createApi({
                             (draft) => {
                                 if (!draft.some(m => m.id === message.id)) {
                                     draft.push(message);
-                  }
+                                }
                             }
                             )
                         )    
@@ -68,7 +92,8 @@ export const chatApi = createApi({
                     await cacheEntryRemoved;
                     socket.disconnect();
                 } catch (error) {
-                    console.error('Websocket error', error)
+                    toast.error(i18n.t('errors.socketInitError'))
+                    console.error('Websocket initialization error:', error);
                 }
             }
         }),
@@ -79,16 +104,12 @@ export const chatApi = createApi({
                 method: 'POST',
                 body: { name: channel.name },
             }),
-            transformResponse: (response) => {
-                if (!response.id) {
-                    throw new Error('Неверный формат ответа сервера');
-                }
+            transformErrorResponse: (response) => {
+                const errorMessage = response.data?.message || i18n.t('channelAddError');
+                toast.error(errorMessage);
                 return response;
             },
             invalidatesTags: ['Channels'],
-            transformErrorResponse: (response) => {
-                return response.data;
-            }
         }),
 
         renameChannel: builder.mutation({
@@ -97,10 +118,12 @@ export const chatApi = createApi({
                 method: 'PATCH',
                 body: { name },
             }),
-            invalidatesTags: ['Channels'],
             transformErrorResponse: (response) => {
-                return response.data;
-            }
+                const errorMessage = response.data?.message || i18n.t('channelRenameError');
+                toast.error(errorMessage);
+                return response;
+            },
+            invalidatesTags: ['Channels'],
         }),
 
         removeChannel: builder.mutation({
@@ -109,10 +132,12 @@ export const chatApi = createApi({
                 method: 'DELETE',
                 body: { id },
             }),
-            invalidatesTags: ['Channels'],
             transformErrorResponse: (response) => {
-                return response.data;
-            }
+                const errorMessage = response.data?.message || i18n.t('channelRemoveError');
+                toast.error(errorMessage);
+                return response;
+            },
+            invalidatesTags: ['Channels'],
         })
     })
 })

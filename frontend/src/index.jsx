@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './utils/i18n/i18n.jsx';
 import { ToastContainer } from 'react-toastify';
+import { NetworkStatus } from './utils/NetworkStatus/NetworkStatus.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')).render(
             pauseOnHover
             theme="light"
           />
+          <NetworkStatus />
           <App />
         </SocketProvider>
       </AuthProvider>

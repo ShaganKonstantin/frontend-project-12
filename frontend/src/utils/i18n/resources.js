@@ -60,6 +60,22 @@ export const resources = {
         sixCharsMin: "Must contain at least 6 characters.",
         // Ошибки в модалках
         enterChName: "Enter channel name.",
+        // Ошибки при отправке/получении/сервера
+        networkError: "No internet connection.",
+        serverError: "Server error.",
+        unauthorized: "Authorization required.",
+        channelsLoadError: "Failed to load channels.",
+        messagesLoadError: "Failed to load messages.",
+        channelAddError: "Failed to add channel.",
+        channelRenameError: "Failed to rename channel.",
+        channelRemoveError: "Failed to remove channel.",
+        messageSendError: "Failed to send message.",
+        socketConnectError: "Chat connection error.",
+        socketError: "Chat error.",
+        socketInitError: "Chat initialization error.",
+        socketReconnect: "Reconnecting to chat...",
+        socketReconnectFailed: "Failed to reconnect to chat.",
+        operationFailed: "Operation failed."
       },
       // Тосты
       channelCreated: "Channel created.",
@@ -129,6 +145,22 @@ export const resources = {
         sixCharsMin: "Не менее 6 символов.",
         // Ошибки в модалках
         enterChName: "Введите имя канала.",
+        // Ошибки при отправке/получении/сервера
+        networkError: "Нет подключения к интернету.",
+        serverError: "Ошибка сервера.",
+        unauthorized: "Требуется авторизация.",
+        channelsLoadError: "Ошибка загрузки каналов.",
+        messagesLoadError: "Ошибка загрузки сообщений.",
+        channelAddError: "Не удалось создать канал.",
+        channelRenameError: "Не удалось переименовать канал.",
+        channelRemoveError: "Не удалось удалить канал.",
+        messageSendError: "Не удалось отправить сообщение.",
+        socketConnectError: "Ошибка подключения к чату.",
+        socketError: "Ошибка в чате.",
+        socketInitError: "Ошибка инициализации чата.",
+        socketReconnect: "Переподключение к чату...",
+        socketReconnectFailed: "Не удалось переподключиться к чату.",
+        operationFailed: "Ошибка выполнения операции."
       },
         // Тосты
       channelCreated: "Канал создан.",
