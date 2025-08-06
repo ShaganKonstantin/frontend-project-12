@@ -60,7 +60,12 @@ export const resources = {
         sixCharsMin: "Must contain at least 6 characters.",
         // Ошибки в модалках
         enterChName: "Enter channel name.",
-      }
+      },
+      // Тосты
+      channelCreated: "Channel created.",
+      channelRenamed: "Channel renamed.",
+      channelRemoved: "Channel removed.",
+      toastError: "An error occured",
     }
   },
   ru: {
@@ -124,7 +129,12 @@ export const resources = {
         sixCharsMin: "Не менее 6 символов.",
         // Ошибки в модалках
         enterChName: "Введите имя канала.",
-      }
-    }
+      },
+        // Тосты
+      channelCreated: "Канал создан.",
+      channelRenamed: "Канал переименован.",
+      channelRemoved: "Канал удалён.",
+      toastError: "Произошла ошибка.",
+    },
   }
 }

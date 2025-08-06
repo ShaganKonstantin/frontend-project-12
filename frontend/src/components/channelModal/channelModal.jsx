@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useEffect, useState, useRef } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
   const { t } = useTranslation();
@@ -13,7 +14,23 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
     },
     validationSchema: channelModalSchema,
     onSubmit: (values, actions) => {
-      onSubmit(values, actions);
+      onSubmit(values) 
+        .then(() => {
+          switch(modal.type) {
+            case 'add':
+              toast.success(t('channelCreated'));
+              break;
+            case 'rename':
+              toast.success(t('channelRenamed'));
+              break;
+          }
+          actions.resetForm();
+          closeModal();
+        })
+        .catch((error) => {
+          toast.error(t('toastError') || error.message);
+          actions.setSubmitting(false);
+        })
     },
     enableReinitialize: true, // чтобы форма подхватывала актуальное имя модалки, если открывается модалка для разных каналов
   });
@@ -56,7 +73,14 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (modal.type === 'remove') {
-      onSubmit({ id: modal.channel.id });
+      onSubmit({ id: modal.channel.id })
+        .then(() => {
+          toast.success(t('channelRemoved'));
+          closeModal();
+        })
+        .catch((error) => {
+          toast.error(t('toastError') || error.message);
+        })
     } else {
       formik.handleSubmit();
     }

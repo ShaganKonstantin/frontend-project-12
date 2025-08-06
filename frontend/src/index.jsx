@@ -8,6 +8,7 @@ import { AuthProvider } from './components/Providers/AuthProvider.jsx';
 import { BrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './utils/i18n/i18n.jsx';
+import { ToastContainer } from 'react-toastify';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -15,6 +16,18 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <AuthProvider>
         <SocketProvider>
+          <ToastContainer 
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <App />
         </SocketProvider>
       </AuthProvider>

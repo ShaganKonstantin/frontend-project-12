@@ -5,6 +5,7 @@ import { RegistrationForm } from './components/Form/RegistrationForm.jsx';
 import { HomePage } from './components/HomePage/HomePage.jsx';
 import { ProtectedRoute } from './components/ProtectedRoute.jsx';
 
+
 function App() {
   return (
         <Routes>
