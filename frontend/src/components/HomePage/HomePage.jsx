@@ -12,6 +12,7 @@ import { MessageForm } from "../Form/MessageForm";
 import { useChannelModal } from "../Hooks/useChannelModal";
 import { ChannelDropdown, ChannelModal } from "../channelModal/channelModal";
 import { useTranslation } from "react-i18next";
+import { filterProfanity } from "../../utils/ProfanityFilter/ProfanityFilter";
 
 export const HomePage = () => {
     const { logout, token } = useAuth();
@@ -32,14 +33,15 @@ export const HomePage = () => {
     const handleSubmit = async (values, actions) => {
     console.log('Submitting with values:', values);
         try {
+            const filteredName = filterProfanity(values.name);
             if (modal.type === 'add') {
-             const response = await addChannel({ name: values.name }).unwrap();
+             const response = await addChannel({ name: filteredName }).unwrap();
              if (response && response.id) {
                 setCurrentChannelId(response.id);
                 if (actions?.resetForm) actions.resetForm();
              }
             } else if (modal.type === 'rename') {
-                await renameChannel({ id: modal.channel.id, name: values.name }).unwrap();
+                await renameChannel({ id: modal.channel.id, name: filteredName }).unwrap();
             } else if (modal.type === 'remove') {
                 await removeChannel(modal.channel.id).unwrap();
                 const generalChannel = channels.find((channel) => channel.name === 'general');

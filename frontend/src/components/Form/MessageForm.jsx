@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useAuth } from "../Hooks/useAuth";
 import { useSendMessageMutation } from "../Slices/ApiSlice";
 import { useTranslation } from "react-i18next";
+import { filterProfanity } from '../../utils/ProfanityFilter/ProfanityFilter';
 
 
 export const MessageForm = ({ channelId }) => {
@@ -13,15 +14,13 @@ export const MessageForm = ({ channelId }) => {
         
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('хэндлер вызывается');
-    console.log('text:', text);
-    console.log('channelId:', channelId);
-    console.log('user:', user);
+
     if (text && channelId && user?.username) {
-      console.log('sendMessage', { text, channelId, username: user.username });
+      // console.log('sendMessage', { text, channelId, username: user.username });
       try {
+        const filteredText = filterProfanity(text);
         await sendMessage({
-          body: text, 
+          body: filteredText, 
           channelId,
           username: user.username
         }).unwrap();
