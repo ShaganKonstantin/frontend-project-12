@@ -142,7 +142,7 @@ export const resources = {
         registrationPasswordMax: "Пароль должен содержать максимум 20 символов.",
         passwordMatch: "Пароли должны совпадать.",
         passwordConfirmation: "Подтвердите пароль.",
-        userExists: "Пользователь с таким именем существует.",
+        userExists: "Такой пользователь уже существует",
         registrationError: "Ошибка регистрации.",
         sixCharsMin: "Не менее 6 символов.",
         // Ошибки в модалках
