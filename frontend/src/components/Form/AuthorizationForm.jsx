@@ -1,14 +1,16 @@
-import { useFormik } from 'formik'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from "../Hooks/useAuth.jsx"
-import axios from 'axios'
-import { SignupSchema } from './validation.js'
-import { useTranslation } from 'react-i18next'
+import { useFormik } from 'formik';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from "../Hooks/useAuth.jsx";
+import axios from 'axios';
+import { SignupSchema } from './validation.js';
+import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 
 export const AuthorizationForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
+  const rollbar = useRollbar();
 
   const { t } = useTranslation();
 
@@ -32,6 +34,10 @@ export const AuthorizationForm = () => {
         
       // eslint-disable-next-line no-unused-vars
       } catch (error) {
+        rollbar.error('Ошибка авторизации', error, {
+            username: formik.values.username,
+            endpoint: '/api/v1/login'
+        });
         setErrors({ auth: 'Неверные имя пользователя или пароль' })
       } finally {
         setSubmitting(false)
