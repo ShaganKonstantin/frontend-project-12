@@ -138,12 +138,12 @@ export const resources = {
         // Ошибки в регистрации
         registrationUsernameMin: "Имя пользователя должно содержать минимум 3 символа.",
         registrationUsernameMax: "Имя пользователя должно содержать максимум 20 символов.",
-        registrationPasswordMin: "Пароль должен содержать минимум 6 символов.",
-        registrationPasswordMax: "Пароль должен содержать максимум 20 символов.",
-        passwordMatch: "Пароли должны совпадать.",
-        passwordConfirmation: "Подтвердите пароль.",
+        registrationPasswordMin: "От 3 до 20 символов",
+        registrationPasswordMax: "От 3 до 20 символов",
+        passwordMatch: "Пароли должны совпадать",
+        passwordConfirmation: "Подтвердите пароль",
         userExists: "Такой пользователь уже существует",
-        registrationError: "Ошибка регистрации.",
+        registrationError: "Ошибка регистрации",
         sixCharsMin: "Не менее 6 символов.",
         // Ошибки в модалках
         enterChName: "Введите имя канала.",
