@@ -1,5 +1,5 @@
 import * as Profanity from 'leo-profanity';
-import russianDict from 'leo-profanity/dictionary/ru.json';
+import russianDict from './ru.js';
 
 Profanity.add(russianDict);
 
