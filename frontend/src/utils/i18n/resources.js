@@ -87,7 +87,7 @@ export const resources = {
   },
   ru: {
     translation: {
-      nameLength: "От 3 to 20 символов.",
+      nameLength: "От 3 to 20 символов",
       // Страница логина
       loginTitle: "Войти",
       loginNamePlaceholder: "Ваш ник",
@@ -136,10 +136,10 @@ export const resources = {
         loginPasswordMin: "Пароль должен содержать минимум 5 символов.",
         fillField: "Заполните поле.",
         // Ошибки в регистрации
-        registrationUsernameMin: "Имя пользователя должно содержать минимум 3 символа.",
-        registrationUsernameMax: "Имя пользователя должно содержать максимум 20 символов.",
-        registrationPasswordMin: "От 3 до 20 символов",
-        registrationPasswordMax: "От 3 до 20 символов",
+        registrationUsernameMin: "От 3 до 20 символов",
+        registrationUsernameMax: "От 3 до 20 символов",
+        registrationPasswordMin: "Не менее 6 символов",
+        registrationPasswordMax: "Не менее 6 символов",
         passwordMatch: "Пароли должны совпадать",
         passwordConfirmation: "Подтвердите пароль",
         userExists: "Такой пользователь уже существует",
