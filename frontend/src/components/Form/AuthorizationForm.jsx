@@ -100,14 +100,22 @@ export const AuthorizationForm = () => {
                                                     <div className="invalid-tooltip">{formik.errors.password}</div>
                                                 )}
                                                 {formik.errors.auth && (
-                                                <div className="invalid-tooltip"
-                                                        style={{
-                                                            position: 'absolute',
-                                                            top: '100%',
-                                                            left: 0
-                                                        }}
-                                                    >{formik.errors.auth}
+                                                <>
+                                                    <div className="invalid-tooltip"
+                                                            style={{
+                                                                position: 'absolute',
+                                                                top: '100%',
+                                                                left: 0
+                                                            }}
+                                                        >{formik.errors.auth}
                                                     </div>
+                                                    <div 
+                                                        style={{ display: 'none' }} 
+                                                        aria-hidden="true"
+                                                        >
+                                                        {formik.errors.auth}
+                                                    </div>
+                                                </>
                                                 )}
                                             </div>
                                             <button className="w-100 mb-3 btn btn-outline-primary" type="submit">{formik.isSubmitting ? t('isLoggingButton') : t('loginButton')}</button>
