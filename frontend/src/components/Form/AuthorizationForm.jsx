@@ -38,7 +38,7 @@ export const AuthorizationForm = () => {
             username: formik.values.username,
             endpoint: '/api/v1/login'
         });
-        setErrors({ auth: 'Неверные имя пользователя или пароль' })
+        setErrors({ auth: t('errors.invalidCredentials') })
       } finally {
         setSubmitting(false)
       }

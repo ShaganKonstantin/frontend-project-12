@@ -150,7 +150,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
                     <button 
                       type='button' 
                       onClick={handleClose} 
-                      className='btn btn-secodary me-2'
+                      className='btn btn-secondary me-2'
                     >
                       {t('modalCancelButton')}
                     </button>

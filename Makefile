@@ -1,10 +1,17 @@
+install:
+	npm install
+	make -C frontend install
+
 frontend-start:
 	make -C frontend start
 
-backend-start:
+start:
 	npx start-server -s ./frontend/dist
 
+build:
+	make -C frontend build
+
 develop:
-	make backend-start & make frontend-start
+	make start & make frontend-start
 
 
