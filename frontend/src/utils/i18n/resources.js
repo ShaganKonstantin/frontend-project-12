@@ -87,7 +87,7 @@ export const resources = {
   },
   ru: {
     translation: {
-      nameLength: "От 3 to 20 символов",
+      nameLength: "От 3 до 20 символов",
       // Страница логина
       loginTitle: "Войти",
       loginNamePlaceholder: "Ваш ник",
