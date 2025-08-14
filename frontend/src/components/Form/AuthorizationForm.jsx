@@ -109,12 +109,12 @@ export const AuthorizationForm = () => {
                                                             }}
                                                         >{formik.errors.auth}
                                                     </div>
-                                                    <div 
+                                                    {/* <div 
                                                         style={{ display: 'none' }} 
                                                         aria-hidden="true"
                                                         >
                                                         {formik.errors.auth}
-                                                    </div>
+                                                    </div> */}
                                                 </>
                                                 )}
                                             </div>

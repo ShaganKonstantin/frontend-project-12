@@ -3,10 +3,10 @@ import i18n from '../../utils/i18n/i18n.jsx';
 
 export const SignupSchema = Yup.object().shape({
     username: Yup.string()
-        .min(5, i18n.t('errors.loginUsernameMin'))
+        // .min(5, i18n.t('errors.loginUsernameMin'))
         .required(i18n.t('errors.fillField')),
     password: Yup.string()
-        .min(5, i18n.t('errors.loginPasswordMin'))
+        // .min(5, i18n.t('errors.loginPasswordMin'))
         .required(i18n.t('errors.fillField'))
 })
 

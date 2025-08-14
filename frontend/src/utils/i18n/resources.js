@@ -46,8 +46,8 @@ export const resources = {
         saveChError: "Saving channel error",
         // Ошибки в логине
         invalidCredentials: "Wrong username or password",
-        loginUsernameMin: "Username must contain at least 5 characters.",
-        loginPasswordMin: "Password must contain at least 5 characters.",
+        // loginUsernameMin: "Username must contain at least 5 characters.",
+        // loginPasswordMin: "Password must contain at least 5 characters.",
         fillField: "Fill this field",
         // Ошибки в регистрации
         registrationUsernameMin: "Username must contain at least 3 characters.",
@@ -132,8 +132,8 @@ export const resources = {
         saveChError: "Ошибка при сохранении канала.",
         // Ошибки в логине
         invalidCredentials: "Неверные имя пользователя или пароль",
-        loginUsernameMin: "Логин должен содержать минимум 5 символов.",
-        loginPasswordMin: "Пароль должен содержать минимум 5 символов.",
+        // loginUsernameMin: "Логин должен содержать минимум 5 символов.",
+        // loginPasswordMin: "Пароль должен содержать минимум 5 символов.",
         fillField: "Заполните поле.",
         // Ошибки в регистрации
         registrationUsernameMin: "От 3 до 20 символов",
