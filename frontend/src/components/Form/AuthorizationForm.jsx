@@ -74,7 +74,7 @@ export const AuthorizationForm = () => {
                           autoComplete="username"
                           placeholder="Ваш ник"
                           id="username"
-                          className={`form-control ${formik.touched.username && formik.errors.username || formik.errors.auth ? 'is-invalid' : ''}`}
+                          className={`form-control ${(formik.touched.username && formik.errors.username) || formik.errors.auth ? 'is-invalid' : ''}`}
                           required
                         />
                         <label htmlFor="username">{t('loginNamePlaceholder')}</label>
@@ -92,7 +92,7 @@ export const AuthorizationForm = () => {
                           autoComplete="current-password"
                           placeholder="Пароль"
                           id="password"
-                          className={`form-control ${formik.touched.password && formik.errors.password || formik.errors.auth ? 'is-invalid' : ''}`}
+                          className={`form-control ${(formik.touched.password && formik.errors.password) || formik.errors.auth ? 'is-invalid' : ''}`}
                           required
                         />
                         <label htmlFor="password">{t('loginPasswordPlaceholder')}</label>
