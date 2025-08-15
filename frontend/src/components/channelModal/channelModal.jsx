@@ -204,7 +204,8 @@ export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick
                 e.stopPropagation();
                 onRename(channel);
               }}
-              aria-label={`Переименовать канал ${channel.name}`}
+              aria-label='Переименовать'
+              // aria-label={`Переименовать канал ${channel.name}`}
             >
               {t('modalRenameChTitle')}
             </Dropdown.Item>
@@ -214,7 +215,7 @@ export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick
                 e.stopPropagation();
                 onRemove(channel);
               }}
-              aria-label={`Удалить канал ${channel.name}`}
+              aria-label='Удалить'
             >
               {t('dropdownDelete')}
             </Dropdown.Item>

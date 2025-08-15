@@ -108,7 +108,7 @@ export const resources = {
       registrationButton: "Зарегистрироваться",
       // Модалка
       channelName: "Имя канала",
-      channelMenu: "Меню канала",
+      channelMenu: "Управление каналом",
       // Модалка-кнопка отмены
       modalCancelButton: "Отменить",
       //Модалка-кнопка отправки

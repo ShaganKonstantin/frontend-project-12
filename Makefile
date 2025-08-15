@@ -14,3 +14,6 @@ build:
 develop:
 	make start & make frontend-start
 
+test:
+	npx playwright test --ui
+
