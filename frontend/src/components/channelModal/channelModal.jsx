@@ -1,210 +1,220 @@
-import { channelModalSchema } from './validation.js';
-import { useFormik } from 'formik';
-import { useEffect, useState, useRef } from 'react';
-import { Dropdown } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
+import { channelModalSchema } from './validation.js'
+import { useFormik } from 'formik'
+import { useEffect, useState, useRef } from 'react'
+import { Dropdown } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const formik = useFormik({
     initialValues: {
-      name: modal.channel?.name || ''
+      name: modal.channel?.name || '',
     },
     validationSchema: channelModalSchema,
     onSubmit: (values, actions) => {
-      onSubmit(values) 
+      onSubmit(values)
         .then(() => {
-          switch(modal.type) {
+          switch (modal.type) {
             case 'add':
-              toast.success(t('channelCreated'));
-              break;
+              toast.success(t('channelCreated'))
+              break
             case 'rename':
-              toast.success(t('channelRenamed'));
-              break;
+              toast.success(t('channelRenamed'))
+              break
           }
-          actions.resetForm();
-          closeModal();
+          actions.resetForm()
+          closeModal()
         })
         .catch((error) => {
-          toast.error(t('toastError') || error.message);
-          actions.setSubmitting(false);
+          toast.error(t('toastError') || error.message)
+          actions.setSubmitting(false)
         })
     },
     enableReinitialize: true, // чтобы форма подхватывала актуальное имя модалки, если открывается модалка для разных каналов
-  });
+  })
 
-  const inputRef = useRef(null);
+  const inputRef = useRef(null)
 
   const getModalTitle = () => {
-    switch(modal.type) {
-      case 'add': 
-        return t('modalAddChTitle');
+    switch (modal.type) {
+      case 'add':
+        return t('modalAddChTitle')
       case 'rename':
-        return t('modalRenameChTitle');
+        return t('modalRenameChTitle')
       case 'remove':
-        return t('modalDeleteChTitle');
+        return t('modalDeleteChTitle')
       default:
-        return '';
+        return ''
     }
-  };
+  }
 
   const getButtonStyle = () => {
-    return modal.type === 'remove' ? 'danger' : 'primary';
-  };
+    return modal.type === 'remove' ? 'danger' : 'primary'
+  }
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
-        closeModal();
+        closeModal()
       };
-    };
-    document.addEventListener('keydown', handleKeyDown);
+    }
+    document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [closeModal]);
+  }, [closeModal])
 
   useEffect(() => {
     if (modal.isOpen && inputRef.current && modal.type !== 'remove') {
-      inputRef.current.focus();
+      inputRef.current.focus()
     }
-  }, [modal.isOpen, modal.type]);
+  }, [modal.isOpen, modal.type])
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (modal.type === 'remove') {
       onSubmit({ id: modal.channel.id })
         .then(() => {
-          toast.success(t('channelRemoved'));
-          closeModal();
+          toast.success(t('channelRemoved'))
+          closeModal()
         })
         .catch((error) => {
-          toast.error(t('toastError') || error.message);
+          toast.error(t('toastError') || error.message)
         })
-    } else {
-      formik.handleSubmit();
+    }
+    else {
+      formik.handleSubmit()
     }
   }
 
   const handleClose = () => {
-    formik.resetForm();
-    closeModal();
+    formik.resetForm()
+    closeModal()
   }
 
-  if(!modal.isOpen) return null;
+  if (!modal.isOpen) return null
 
   return (
-    <div className='modal fade show' tabIndex="-1" style={{ display: 'block' }}>
-      <div className='modal-dialog modal-dialog-centered'>
-        <div className='modal-content'>
-          <div className='modal-header'>
-            <h5 className='modal-title'>{getModalTitle()}</h5>
-            <button 
-              className='btn-close'
-              type='button'
+    <div className="modal fade show" tabIndex="-1" style={{ display: 'block' }}>
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">{getModalTitle()}</h5>
+            <button
+              className="btn-close"
+              type="button"
               onClick={handleClose}
-              aria-label='Close'
-            ></button>
+              aria-label="Close"
+            >
+            </button>
           </div>
-            <div className='modal-body'>
-              {modal.type !== 'remove' ? (
-                <form onSubmit={formik.handleSubmit}>
-                  <input 
-                    ref={inputRef}
-                    type="text"
-                    className={`form-control ${formik.errors.name && formik.touched.name ? 'is-invalid' : ''}`} 
-                    onChange={formik.handleChange}
-                    disabled={formik.isSubmitting}
-                    name='name'
-                    value={formik.values.name}
-                    required
-                    id='channelName'
-                    aria-label={t('channelName')}
-                  />
-                  <label htmlFor="channelName" className='visually-hidden'>{t('channelName')}</label>
-                  {formik.touched.name && formik.errors.name && (
-                    <div className='invalid-feedback'>{formik.errors.name}</div>
-                  )}
-                  <div className='d-flex justify-content-end mt-3'>
-                    <button 
-                      type='button' 
-                      onClick={handleClose} 
-                      className='btn btn-secondary me-2' 
+          <div className="modal-body">
+            {modal.type !== 'remove'
+              ? (
+                  <form onSubmit={formik.handleSubmit}>
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      className={`form-control ${formik.errors.name && formik.touched.name ? 'is-invalid' : ''}`}
+                      onChange={formik.handleChange}
                       disabled={formik.isSubmitting}
-                    >
-                      {t('modalCancelButton')}
-                    </button>
-                    <button 
-                      type='submit' 
-                      className={`btn btn-${getButtonStyle()} me-2`} 
-                      disabled={formik.isSubmitting}
-                    >
-                      {formik.isSubmitting ? t('modalSendingButton') : t('modalSendButton')}
-                    </button>
+                      name="name"
+                      value={formik.values.name}
+                      required
+                      id="channelName"
+                      aria-label={t('channelName')}
+                    />
+                    <label htmlFor="channelName" className="visually-hidden">{t('channelName')}</label>
+                    {formik.touched.name && formik.errors.name && (
+                      <div className="invalid-feedback">{formik.errors.name}</div>
+                    )}
+                    <div className="d-flex justify-content-end mt-3">
+                      <button
+                        type="button"
+                        onClick={handleClose}
+                        className="btn btn-secondary me-2"
+                        disabled={formik.isSubmitting}
+                      >
+                        {t('modalCancelButton')}
+                      </button>
+                      <button
+                        type="submit"
+                        className={`btn btn-${getButtonStyle()} me-2`}
+                        disabled={formik.isSubmitting}
+                      >
+                        {formik.isSubmitting ? t('modalSendingButton') : t('modalSendButton')}
+                      </button>
+                    </div>
+                  </form>
+                )
+              : (
+                  <div>
+                    <p className="">{t('modalDeleteChConfirmation')}</p>
+                    <div className="d-flex justify-content-end">
+                      <button
+                        type="button"
+                        onClick={handleClose}
+                        className="btn btn-secondary me-2"
+                      >
+                        {t('modalCancelButton')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleSubmit}
+                        className="btn btn-danger me-2"
+                      >
+                        {t('modalDeleteChButton')}
+                      </button>
+                    </div>
                   </div>
-                </form>
-              ) : (
-                <div>
-                  <p className=''>{t('modalDeleteChConfirmation')}</p>
-                  <div className='d-flex justify-content-end'>
-                    <button 
-                      type='button' 
-                      onClick={handleClose} 
-                      className='btn btn-secondary me-2'
-                    >
-                      {t('modalCancelButton')}
-                    </button>
-                    <button 
-                      type='button' 
-                      onClick={handleSubmit} 
-                      className='btn btn-danger me-2'>{t('modalDeleteChButton')}</button>
-                  </div>
-                </div>
-              )}
-            </div>
+                )}
+          </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick }) => {
-  const [showMenu, setShowMenu] = useState(false);
-  const showDropdown = channel.removable === true;
+  const [showMenu, setShowMenu] = useState(false)
+  const showDropdown = channel.removable === true
 
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
-    <div className='d-flex align-items-center w-100'>
-      <button 
+    <div className="d-flex align-items-center w-100">
+      <button
         className={`btn w-100 text-start text-truncate ${isActive ? 'btn-secondary' : 'btn-light'}`}
         onClick={onClick}
         aria-label={`Перейти в канал ${channel.name}`}
       >
-        <span># {channel.name}</span>
+        <span>
+          #
+          {channel.name}
+        </span>
       </button>
-      {/*Кнопка для редактируемых каналов*/}
+      {/* Кнопка для редактируемых каналов */}
       {showDropdown && (
         <Dropdown
           show={showMenu}
-          onToggle={(isOpen) => setShowMenu(isOpen)}
+          onToggle={isOpen => setShowMenu(isOpen)}
         >
           <Dropdown.Toggle
             split
             variant={isActive ? 'secondary' : 'light'}
-            className='dropdown-toggle-split'
-            aria-label='Управление каналом'
+            className="dropdown-toggle-split"
+            aria-label="Управление каналом"
           >
-            <span className='visually-hidden'>{t('channelMenu')}</span>
+            <span className="visually-hidden">{t('channelMenu')}</span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
             <Dropdown.Item
               onClick={(e) => {
-                e.stopPropagation();
-                onRename(channel);
+                e.stopPropagation()
+                onRename(channel)
               }}
-              aria-label='Переименовать'
+              aria-label="Переименовать"
               // aria-label={`Переименовать канал ${channel.name}`}
             >
               {t('modalRenameChTitle')}
@@ -212,10 +222,10 @@ export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick
 
             <Dropdown.Item
               onClick={(e) => {
-                e.stopPropagation();
-                onRemove(channel);
+                e.stopPropagation()
+                onRemove(channel)
               }}
-              aria-label='Удалить'
+              aria-label="Удалить"
             >
               {t('dropdownDelete')}
             </Dropdown.Item>
@@ -223,5 +233,5 @@ export const ChannelDropdown = ({ channel, onRemove, onRename, isActive, onClick
         </Dropdown>
       )}
     </div>
-  );
-};
+  )
+}

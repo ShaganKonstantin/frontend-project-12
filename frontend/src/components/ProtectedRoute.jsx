@@ -1,5 +1,5 @@
-import { Navigate, useLocation } from "react-router-dom"
-import { useAuth } from "./Hooks/useAuth"
+import { Navigate, useLocation } from 'react-router-dom'
+import { useAuth } from './Hooks/useAuth'
 
 export const ProtectedRoute = ({ children }) => {
   const location = useLocation()

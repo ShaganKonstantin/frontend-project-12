@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export const PageNotFound = () => {
-    return <h1 className="text-center">404 (not found)</h1>
+  return <h1 className="text-center">404 (not found)</h1>
 }

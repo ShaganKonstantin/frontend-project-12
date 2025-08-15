@@ -6,16 +6,16 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['leo-profanity/dictionary/ru.json']
-    }
+      external: ['leo-profanity/dictionary/ru.json'],
+    },
   },
   server: {
     allowedHosts: ['frontend-project-12-rr1a.onrender.com'],
     port: 5002,
     proxy: {
       '/api': {
-        target: 'http://localhost:5001'
-      }
-    }
-  }
+        target: 'http://localhost:5001',
+      },
+    },
+  },
 })

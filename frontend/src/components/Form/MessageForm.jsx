@@ -1,57 +1,57 @@
-import { useRef, useState } from "react";
-import { useAuth } from "../Hooks/useAuth";
-import { useSendMessageMutation } from "../Slices/ApiSlice";
-import { useTranslation } from "react-i18next";
-import { filterProfanity } from '../../utils/ProfanityFilter/ProfanityFilter';
-
+import { useRef, useState } from 'react'
+import { useAuth } from '../Hooks/useAuth'
+import { useSendMessageMutation } from '../Slices/ApiSlice'
+import { useTranslation } from 'react-i18next'
+import { filterProfanity } from '../../utils/ProfanityFilter/ProfanityFilter'
 
 export const MessageForm = ({ channelId }) => {
-  const [text, setText] = useState("");
-  const inputRef = useRef(null);
-  const [sendMessage] = useSendMessageMutation();
-  const { user } = useAuth();
-  const { t } = useTranslation();
-        
+  const [text, setText] = useState('')
+  const inputRef = useRef(null)
+  const [sendMessage] = useSendMessageMutation()
+  const { user } = useAuth()
+  const { t } = useTranslation()
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (text && channelId && user?.username) {
       // console.log('sendMessage', { text, channelId, username: user.username });
       try {
-        const filteredText = filterProfanity(text);
+        const filteredText = filterProfanity(text)
         await sendMessage({
-          body: filteredText, 
+          body: filteredText,
           channelId,
-          username: user.username
-        }).unwrap();
-          setText('');
-          inputRef.current?.focus();
-      } catch(error) {
-        console.error(t('sendingError'), error);
-        }
+          username: user.username,
+        }).unwrap()
+        setText('')
+        inputRef.current?.focus()
       }
-    };
-
-    return (
-      <form className="py-1" onSubmit={handleSubmit}>
-        <div className="input-group">
-          <input 
-            ref={inputRef} 
-            type="text" 
-            className="border rounded-2 p-2 ps-2 form-control" 
-            style={{ minWidth: '50px' }}
-            value={text} 
-            onChange={(e) => setText(e.target.value)} 
-            placeholder={t('inputPlaceholder')} 
-            aria-label="Новое сообщение"
-          />
-          <button type="submit" className="btn btn-group-vertical">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor" className="bi bi-arrow-right-square">
-              <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"></path>
-            </svg>
-            <span className="visually-hidden">{t('modalSendButton')}</span>
-          </button>
-        </div>
-      </form>
-      )
+      catch (error) {
+        console.error(t('sendingError'), error)
+      }
     }
+  }
+
+  return (
+    <form className="py-1" onSubmit={handleSubmit}>
+      <div className="input-group">
+        <input
+          ref={inputRef}
+          type="text"
+          className="border rounded-2 p-2 ps-2 form-control"
+          style={{ minWidth: '50px' }}
+          value={text}
+          onChange={e => setText(e.target.value)}
+          placeholder={t('inputPlaceholder')}
+          aria-label="Новое сообщение"
+        />
+        <button type="submit" className="btn btn-group-vertical">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor" className="bi bi-arrow-right-square">
+            <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"></path>
+          </svg>
+          <span className="visually-hidden">{t('modalSendButton')}</span>
+        </button>
+      </div>
+    </form>
+  )
+}
