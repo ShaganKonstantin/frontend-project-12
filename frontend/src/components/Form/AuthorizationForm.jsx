@@ -32,7 +32,7 @@ export const AuthorizationForm = () => {
         const { from } = location.state || { from: { pathname: '/' } }
         navigate(from.pathname, { replace: true })
         
-      // eslint-disable-next-line no-unused-vars
+       
       } catch (error) {
         rollbar.error('Ошибка авторизации', error, {
             username: formik.values.username,
