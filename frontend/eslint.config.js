@@ -26,4 +26,4 @@ export default [
       'react/jsx-uses-vars': 'error',
     },
   },
-];
+]
