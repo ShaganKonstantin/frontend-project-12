@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { chatApi } from '../Slices/ApiSlice'
+import { chatApi } from '../Slices/generalExports.js'
 
 export const store = configureStore({
   reducer: {

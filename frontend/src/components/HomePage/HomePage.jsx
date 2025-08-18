@@ -7,7 +7,7 @@ import {
   useAddChannelMutation,
   useRenameChannelMutation,
   useRemoveChannelMutation,
-} from '../Slices/ApiSlice'
+} from '../Slices/generalExports.js'
 import { MessageForm } from '../Form/MessageForm'
 import { useChannelModal } from '../Hooks/useChannelModal'
 import { ChannelDropdown, ChannelModal } from '../channelModal/channelModal'

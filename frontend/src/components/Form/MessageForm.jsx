@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useAuth } from '../Hooks/useAuth'
-import { useSendMessageMutation } from '../Slices/ApiSlice'
+import { useSendMessageMutation } from '../Slices/generalExports.js'
 import { useTranslation } from 'react-i18next'
 import { filterProfanity } from '../../utils/ProfanityFilter/ProfanityFilter'
 
