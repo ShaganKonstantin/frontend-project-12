@@ -1,8 +1,8 @@
-import { createSocket } from "../WebSocket/webSocket";
-import { getAuthToken } from "./getAuthToken";
-import { toast } from "react-toastify";
-import i18n from "../../utils/i18n/i18n";
-import { chatApi } from "./chatApi";
+import { createSocket } from '../WebSocket/webSocket'
+import { getAuthToken } from './getAuthToken'
+import { toast } from 'react-toastify'
+import i18n from '../../utils/i18n/i18n'
+import { chatApi } from './chatApi'
 
 export const socketApi = chatApi.injectEndpoints({
   endpoints: builder => ({
@@ -51,7 +51,7 @@ export const socketApi = chatApi.injectEndpoints({
         }
       },
     }),
-  })
+  }),
 })
 
 export const { useSubscribeToMessagesQuery } = socketApi

@@ -1,6 +1,6 @@
-import { chatApi } from "./chatApi";
-import { toast } from "react-toastify";
-import i18n from "../../utils/i18n/i18n";
+import { chatApi } from './chatApi'
+import { toast } from 'react-toastify'
+import i18n from '../../utils/i18n/i18n'
 
 export const channelsApi = chatApi.injectEndpoints({
   endpoints: builder => ({
@@ -54,7 +54,7 @@ export const channelsApi = chatApi.injectEndpoints({
       },
       invalidatesTags: ['Channels'],
     }),
-  })
+  }),
 })
 
 export const {

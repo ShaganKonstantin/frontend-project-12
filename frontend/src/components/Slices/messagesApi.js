@@ -1,10 +1,10 @@
-import { chatApi } from "./chatApi";
-import { toast } from "react-toastify";
-import i18n from "../../utils/i18n/i18n";
+import { chatApi } from './chatApi'
+import { toast } from 'react-toastify'
+import i18n from '../../utils/i18n/i18n'
 
 export const messagesApi = chatApi.injectEndpoints({
   endpoints: builder => ({
-        getMessages: builder.query({
+    getMessages: builder.query({
       query: () => '/messages',
       transformErrorResponse: (response) => {
         toast.error(i18n.t('errors.messagesLoadError'))
@@ -25,7 +25,7 @@ export const messagesApi = chatApi.injectEndpoints({
       },
       invalidatesTags: ['Messages'],
     }),
-  })
+  }),
 })
 
 export const {

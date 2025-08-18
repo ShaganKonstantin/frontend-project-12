@@ -10,13 +10,13 @@ export const {
   useAddChannelMutation,
   useRenameChannelMutation,
   useRemoveChannelMutation,
-} = channelsApi;
+} = channelsApi
 
 export const {
   useGetMessagesQuery,
-  useSendMessageMutation
-} = messagesApi;
+  useSendMessageMutation,
+} = messagesApi
 
 export const {
   useSubscribeToMessagesQuery,
-} = socketApi;
+} = socketApi
