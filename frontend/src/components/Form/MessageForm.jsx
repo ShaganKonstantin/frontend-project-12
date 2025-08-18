@@ -15,7 +15,6 @@ export const MessageForm = ({ channelId }) => {
     e.preventDefault()
 
     if (text && channelId && user?.username) {
-      // console.log('sendMessage', { text, channelId, username: user.username });
       try {
         const filteredText = filterProfanity(text)
         await sendMessage({
@@ -38,8 +37,7 @@ export const MessageForm = ({ channelId }) => {
         <input
           ref={inputRef}
           type="text"
-          className="border rounded-2 p-2 ps-2 form-control"
-          style={{ minWidth: '50px' }}
+          className="border rounded-2 p-2 ps-2 form-control w-auto"
           value={text}
           onChange={e => setText(e.target.value)}
           placeholder={t('inputPlaceholder')}

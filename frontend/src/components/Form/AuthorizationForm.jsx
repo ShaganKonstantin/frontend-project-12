@@ -82,7 +82,7 @@ export const AuthorizationForm = () => {
                           <div className="invalid-tooltip">{formik.errors.username}</div>
                         )}
                       </div>
-                      <div className="form-floating mb-4" style={{ position: 'relative' }}>
+                      <div className="form-floating mb-4 position-relative">
                         <input
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -102,12 +102,7 @@ export const AuthorizationForm = () => {
                         {formik.errors.auth && (
                           <>
                             <div
-                              className="invalid-tooltip"
-                              style={{
-                                position: 'absolute',
-                                top: '100%',
-                                left: 0,
-                              }}
+                              className="invalid-tooltip position-absolute top-100 start-0"
                             >
                               {formik.errors.auth}
                             </div>

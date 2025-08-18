@@ -95,7 +95,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
   if (!modal.isOpen) return null
 
   return (
-    <div className="modal fade show" tabIndex="-1" style={{ display: 'block' }}>
+    <div className="modal fade show d-block" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">

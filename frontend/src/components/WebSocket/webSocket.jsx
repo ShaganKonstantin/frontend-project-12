@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client'
 
 export const createSocket = (token, username) => {
-  const socket = io('http://localhost:5001', {
+  const socket = io({
     auth: {
       token,
       username,

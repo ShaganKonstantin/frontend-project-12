@@ -1,6 +1,7 @@
 export const resources = {
   en: {
     translation: {
+      backToHome: 'Back to Home page',
       nameLength: 'Must contain from 3 to 20 characters.',
       // Страница логина
       loginTitle: 'Log in',
@@ -87,6 +88,7 @@ export const resources = {
   },
   ru: {
     translation: {
+      backToHome: 'Назад на Главную страницу',
       nameLength: 'От 3 до 20 символов',
       // Страница логина
       loginTitle: 'Войти',

@@ -111,7 +111,7 @@ export const HomePage = () => {
             </div>
           </nav>
           <div className="container h-100 my-4 overflow-hidden rounded shadow">
-            <div className="row h-100 bg-white flex-md-row d-flex" style={{ minWidth: 0 }}>
+            <div className="row h-100 bg-white flex-md-row d-flex min-w-0">
               <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
                 <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
                   <b>{t('channels')}</b>
@@ -146,10 +146,10 @@ export const HomePage = () => {
                   ))}
                 </ul>
               </div>
-              <div className="col p-0 h-100 d-flex flex-column" style={{ minWidth: 0 }}>
-                <div className="d-flex flex-column h-100" style={{ minWidth: 0 }}>
+              <div className="col p-0 h-100 d-flex flex-column min-w-0">
+                <div className="d-flex flex-column h-100 min-w-0">
                   {/* Заголовок канала */}
-                  <div className="bg-light mb-4 p-3 shadow-sm small" style={{ flexShrink: 0 }}>
+                  <div className="bg-light mb-4 p-3 shadow-sm small flex-shrink-0">
                     <p className="m-0 text-truncate">
                       <b className="m-0">
                         #
@@ -174,7 +174,7 @@ export const HomePage = () => {
                   </div>
 
                   {/* Форма ввода */}
-                  <div className="p-3 border-top bg-white" style={{ flexShrink: 0 }}>
+                  <div className="p-3 border-top bg-white flex-shrink-0">
                     <MessageForm channelId={currentChannelId} />
                   </div>
                 </div>
