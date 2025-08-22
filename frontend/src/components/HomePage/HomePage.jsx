@@ -4,9 +4,6 @@ import {
   useGetChannelsQuery,
   useGetMessagesQuery,
   useSubscribeToMessagesQuery,
-  useAddChannelMutation,
-  useRenameChannelMutation,
-  useRemoveChannelMutation,
 } from '../Slices/generalExports.js'
 import { MessageForm } from '../Form/MessageForm'
 import { useChannelModal } from '../Hooks/useChannelModal'
@@ -19,9 +16,6 @@ export const HomePage = () => {
   const { logout, token } = useAuth()
   const [currentChannelId, setCurrentChannelId] = useState(null)
   const { modal, openModal, closeModal } = useChannelModal()
-  // const [addChannel] = useAddChannelMutation()
-  // const [renameChannel] = useRenameChannelMutation()
-  // const [removeChannel] = useRemoveChannelMutation()
   const { t } = useTranslation()
 
   const handleAddChannel = () => {
