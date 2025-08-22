@@ -13,24 +13,8 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
       name: modal.channel?.name || '',
     },
     validationSchema: channelModalSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: (values) => {
       onSubmit(values)
-        .then(() => {
-          switch (modal.type) {
-            case 'add':
-              toast.success(t('channelCreated'))
-              break
-            case 'rename':
-              toast.success(t('channelRenamed'))
-              break
-          }
-          actions.resetForm()
-          closeModal()
-        })
-        .catch((error) => {
-          toast.error(t('toastError') || error.message)
-          actions.setSubmitting(false)
-        })
     },
     enableReinitialize: true, // чтобы форма подхватывала актуальное имя модалки, если открывается модалка для разных каналов
   })

@@ -6,8 +6,10 @@ export const channelsApi = chatApi.injectEndpoints({
   endpoints: builder => ({
     getChannels: builder.query({
       query: () => '/channels',
-      transformErrorResponse: (response) => {
-        toast.error(i18n.t('errors.channelsLoadError'))
+      transformErrorResponse: (response, meta) => {
+        if (meta.response?.status !== undefined) {
+          toast.error(i18n.t('errors.channelsLoadError'))
+        }
         return response
       },
       providesTags: ['Channels'],
@@ -19,9 +21,11 @@ export const channelsApi = chatApi.injectEndpoints({
         method: 'POST',
         body: { name: channel.name },
       }),
-      transformErrorResponse: (response) => {
-        const errorMessage = response.data?.message || i18n.t('channelAddError')
-        toast.error(errorMessage)
+      transformErrorResponse: (response, meta) => {
+        if (meta.response?.status !== undefined) {
+          const errorMessage = response.data?.message || i18n.t('errors.channelAddError')
+          toast.error(errorMessage)
+        }
         return response
       },
       invalidatesTags: ['Channels'],
@@ -33,9 +37,11 @@ export const channelsApi = chatApi.injectEndpoints({
         method: 'PATCH',
         body: { name },
       }),
-      transformErrorResponse: (response) => {
-        const errorMessage = response.data?.message || i18n.t('channelRenameError')
-        toast.error(errorMessage)
+      transformErrorResponse: (response, meta) => {
+        if (meta.response?.status !== undefined) {
+          const errorMessage = response.data?.message || i18n.t('errors.channelRenameError')
+          toast.error(errorMessage)
+        }
         return response
       },
       invalidatesTags: ['Channels'],
@@ -47,9 +53,11 @@ export const channelsApi = chatApi.injectEndpoints({
         method: 'DELETE',
         body: { id },
       }),
-      transformErrorResponse: (response) => {
-        const errorMessage = response.data?.message || i18n.t('channelRemoveError')
-        toast.error(errorMessage)
+      transformErrorResponse: (response, meta) => {
+        if (meta.response?.status !== undefined) {
+          const errorMessage = response.data?.message || i18n.t('errors.channelRemoveError')
+          toast.error(errorMessage)
+        }
         return response
       },
       invalidatesTags: ['Channels'],

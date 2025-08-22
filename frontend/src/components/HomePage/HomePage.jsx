@@ -13,39 +13,38 @@ import { useChannelModal } from '../Hooks/useChannelModal'
 import { ChannelDropdown, ChannelModal } from '../channelModal/channelModal'
 import { useTranslation } from 'react-i18next'
 import { filterProfanity } from '../../utils/ProfanityFilter/ProfanityFilter'
+import { addChannelService, renameChannelService, removeChannelService } from '../Services/channelServices.js'
 
 export const HomePage = () => {
   const { logout, token } = useAuth()
   const [currentChannelId, setCurrentChannelId] = useState(null)
   const { modal, openModal, closeModal } = useChannelModal()
-  const [addChannel] = useAddChannelMutation()
-  const [renameChannel] = useRenameChannelMutation()
-  const [removeChannel] = useRemoveChannelMutation()
+  // const [addChannel] = useAddChannelMutation()
+  // const [renameChannel] = useRenameChannelMutation()
+  // const [removeChannel] = useRemoveChannelMutation()
   const { t } = useTranslation()
 
   const handleAddChannel = () => {
-    console.log('Кнопка работает')
     openModal('add')
   }
   const handleRenameChannel = channel => openModal('rename', channel)
   const handleRemoveChannel = channel => openModal('remove', channel)
 
   const handleSubmit = async (values, actions) => {
-    console.log('Submitting with values:', values)
     try {
       const filteredName = filterProfanity(values.name)
       if (modal.type === 'add') {
-        const response = await addChannel({ name: filteredName }).unwrap()
+        const response = await addChannelService(filteredName)
         if (response && response.id) {
           setCurrentChannelId(response.id)
           if (actions?.resetForm) actions.resetForm()
         }
       }
       else if (modal.type === 'rename') {
-        await renameChannel({ id: modal.channel.id, name: filteredName }).unwrap()
+        await renameChannelService(modal.channel.id, filteredName)
       }
       else if (modal.type === 'remove') {
-        await removeChannel(modal.channel.id).unwrap()
+        await removeChannelService(modal.channel.id)
         const generalChannel = channels.find(channel => channel.name === 'general')
         if (generalChannel) {
           setCurrentChannelId(generalChannel.id)
