@@ -59,7 +59,6 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
     if (modal.type === 'remove') {
       onSubmit({ id: modal.channel.id })
         .then(() => {
-          toast.success(t('channelRemoved'))
           closeModal()
         })
         .catch((error) => {

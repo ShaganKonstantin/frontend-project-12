@@ -2,6 +2,8 @@ import { chatApi } from './chatApi'
 import { toast } from 'react-toastify'
 import i18n from '../../utils/i18n/i18n'
 
+const isNetworkError = error => error?.status === 'FETCH_ERROR' || error?.error === 'TypeError'
+
 export const channelsApi = chatApi.injectEndpoints({
   endpoints: builder => ({
     getChannels: builder.query({
@@ -9,6 +11,9 @@ export const channelsApi = chatApi.injectEndpoints({
       transformErrorResponse: (response, meta) => {
         if (meta.response?.status !== undefined) {
           toast.error(i18n.t('errors.channelsLoadError'))
+        }
+        else if (isNetworkError(meta)) {
+          toast.error(i18n.t('errors.networkError'))
         }
         return response
       },
@@ -21,13 +26,6 @@ export const channelsApi = chatApi.injectEndpoints({
         method: 'POST',
         body: { name: channel.name },
       }),
-      transformErrorResponse: (response, meta) => {
-        if (meta.response?.status !== undefined) {
-          const errorMessage = response.data?.message || i18n.t('errors.channelAddError')
-          toast.error(errorMessage)
-        }
-        return response
-      },
       invalidatesTags: ['Channels'],
     }),
 
@@ -37,13 +35,6 @@ export const channelsApi = chatApi.injectEndpoints({
         method: 'PATCH',
         body: { name },
       }),
-      transformErrorResponse: (response, meta) => {
-        if (meta.response?.status !== undefined) {
-          const errorMessage = response.data?.message || i18n.t('errors.channelRenameError')
-          toast.error(errorMessage)
-        }
-        return response
-      },
       invalidatesTags: ['Channels'],
     }),
 
@@ -53,13 +44,6 @@ export const channelsApi = chatApi.injectEndpoints({
         method: 'DELETE',
         body: { id },
       }),
-      transformErrorResponse: (response, meta) => {
-        if (meta.response?.status !== undefined) {
-          const errorMessage = response.data?.message || i18n.t('errors.channelRemoveError')
-          toast.error(errorMessage)
-        }
-        return response
-      },
       invalidatesTags: ['Channels'],
     }),
   }),

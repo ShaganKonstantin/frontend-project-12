@@ -5,6 +5,16 @@ import { toast } from 'react-toastify'
 
 const isNetworkError = error => error?.status === 'FETCH_ERROR' || error?.error === 'TypeError'
 
+const handleChannelServiceError = (error, customError) => {
+  if (isNetworkError(error)) {
+    toast.error(i18n.t('errors.networkError'))
+  }
+  else {
+    toast.error(i18n.t(customError))
+  }
+  throw error
+}
+
 const addChannelService = async (channelName) => {
   try {
     const result = await store.dispatch(channelsApi.endpoints.addChannel.initiate({ name: channelName }))
@@ -15,14 +25,7 @@ const addChannelService = async (channelName) => {
     return result.data
   }
   catch (error) {
-    if (isNetworkError(error)) {
-      toast.error(i18n.t('errors.networkError'))
-    }
-    else {
-      // Другие ошибки будут обработаны в transformErrorResponse
-      console.error('Channel add error:', error)
-    }
-    throw error
+    handleChannelServiceError(error, 'errors.channelAddError')
   }
 }
 
@@ -36,13 +39,7 @@ const renameChannelService = async (id, newName) => {
     return result.data
   }
   catch (error) {
-    if (isNetworkError(error)) {
-      toast.error(i18n.t('errors.networkError'))
-    }
-    else {
-      console.error('Channel rename error:', error)
-    }
-    throw error
+    handleChannelServiceError(error, 'errors.channelRenameError')
   }
 }
 
@@ -56,14 +53,23 @@ const removeChannelService = async (id) => {
     return result.data
   }
   catch (error) {
-    if (isNetworkError(error)) {
-      toast.error(i18n.t('errors.networkError'))
-    }
-    else {
-      console.error('Channel remove error:', error)
-    }
-    throw error
+    handleChannelServiceError(error, 'errors.channelRemoveError')
+    return null
   }
 }
 
 export { addChannelService, renameChannelService, removeChannelService }
+
+/* Пусть будет на всякий случай, если придется использовать его в компоненте */
+// const getChannelService = async () => {
+//   try {
+//     const result = await store.dispatch(channelsApi.endpoints.getChannels.initiate())
+//     if (result.error) {
+//       throw result.error
+//     }
+//     return result.data
+//   }
+//   catch (error) {
+//     handleChannelServiceError(error, 'errors.channelsLoadError')
+//   }
+// }
