@@ -67,7 +67,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
     }
     else {
       await formik.submitForm()
-      if (Object.keys(formik.errors).length === 0) { // Закрыть модалку только после валидации 
+      if (Object.keys(formik.errors).length === 0) { // Закрыть модалку только после валидации
         handleClose()
       }
     }

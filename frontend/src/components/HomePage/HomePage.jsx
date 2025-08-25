@@ -44,7 +44,6 @@ export const HomePage = () => {
           setCurrentChannelId(generalChannel.id)
         }
       }
-      // closeModal()
     }
     catch (error) {
       console.error('Ошибка', error)
