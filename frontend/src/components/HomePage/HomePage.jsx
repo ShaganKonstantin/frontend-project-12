@@ -17,7 +17,6 @@ export const HomePage = () => {
   const [currentChannelId, setCurrentChannelId] = useState(null)
   const { modal, openModal, closeModal } = useChannelModal()
   const { t } = useTranslation()
-  
 
   const handleAddChannel = () => {
     openModal('add')

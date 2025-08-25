@@ -5,6 +5,7 @@ import axios from 'axios'
 import { SignupSchema } from './validation.js'
 import { useTranslation } from 'react-i18next'
 import { useRollbar } from '@rollbar/react'
+import { toast } from 'react-toastify'
 
 export const AuthorizationForm = () => {
   const navigate = useNavigate()
@@ -13,6 +14,8 @@ export const AuthorizationForm = () => {
   const rollbar = useRollbar()
 
   const { t } = useTranslation()
+
+  const isNetworkError = error => !error.response && (error.message === 'Network error' || error.code === 'ERR_NETWORK')
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +40,13 @@ export const AuthorizationForm = () => {
           username: formik.values.username,
           endpoint: '/api/v1/login',
         })
-        setErrors({ auth: t('errors.invalidCredentials') })
+        if (isNetworkError(error)) {
+          toast.error(t('errors.networkError'))
+          setErrors({ auth: t('errors.networkError') })
+        }
+        else {
+          setErrors({ auth: t('errors.invalidCredentials') })
+        }
       }
       finally {
         setSubmitting(false)

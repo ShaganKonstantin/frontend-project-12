@@ -4,11 +4,14 @@ import { useAuth } from '../Hooks/useAuth.jsx'
 import axios from 'axios'
 import { RegistrationSchema } from './validation.js'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 export const RegistrationForm = () => {
   const navigate = useNavigate()
   const { login } = useAuth()
   const { t } = useTranslation()
+
+  const isNetworkError = error => !error.response && (error.message === 'Network error' || error.code === 'ERR_NETWORK')
 
   const formik = useFormik({
     initialValues: {
@@ -27,6 +30,10 @@ export const RegistrationForm = () => {
       catch (error) {
         if (error.response?.status === 409) {
           setErrors({ username: t('errors.userExists') })
+        }
+        else if (isNetworkError(error)) {
+          toast.error(t('errors.networkError'))
+          setErrors({ auth: t('errors.networkError') })
         }
         else {
           setErrors({ auth: t('errors.registrationError') })
