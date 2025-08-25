@@ -13,8 +13,8 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
       name: modal.channel?.name || '',
     },
     validationSchema: channelModalSchema,
-    onSubmit: (values) => {
-      onSubmit(values)
+    onSubmit: async (values) => {
+      await onSubmit(values)
     },
     enableReinitialize: true, // чтобы форма подхватывала актуальное имя модалки, если открывается модалка для разных каналов
   })
@@ -54,19 +54,22 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
     }
   }, [modal.isOpen, modal.type])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (modal.type === 'remove') {
-      onSubmit({ id: modal.channel.id })
-        .then(() => {
-          closeModal()
-        })
-        .catch((error) => {
-          toast.error(t('toastError') || error.message)
-        })
+      try {
+        await onSubmit({ id: modal.channel.id })
+        handleClose()
+      }
+      catch (error) {
+        toast.error(t('toastError') || error.message)
+      }
     }
     else {
-      formik.handleSubmit()
+      await formik.submitForm()
+      if (Object.keys(formik.errors).length === 0) { // Закрыть модалку только после валидации 
+        handleClose()
+      }
     }
   }
 
@@ -94,7 +97,7 @@ export const ChannelModal = ({ modal, closeModal, onSubmit }) => {
           <div className="modal-body">
             {modal.type !== 'remove'
               ? (
-                  <form onSubmit={formik.handleSubmit}>
+                  <form onSubmit={handleSubmit}>
                     <input
                       ref={inputRef}
                       type="text"
