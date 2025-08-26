@@ -6,6 +6,7 @@ import { SignupSchema } from './validation.js'
 import { useTranslation } from 'react-i18next'
 import { useRollbar } from '@rollbar/react'
 import { toast } from 'react-toastify'
+import loginImage from '../../assets/loginImage.jpg'
 
 export const AuthorizationForm = () => {
   const navigate = useNavigate()
@@ -69,9 +70,9 @@ export const AuthorizationForm = () => {
                 <div className="card shadow-sm d-flex">
                   <div className="card-body row p-5 d-flex">
                     <div className="col-12 col-md-6 d-flex align-items-center justify-content-center d-flex">
-                      <img src="https://frontend-chat-ru.hexlet.app/assets/avatar-DIE1AEpS.jpg" alt="Войти" className="rounded-circle" />
+                      <img src={loginImage} alt="Войти" className="rounded-circle" />
                     </div>
-                    <form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
+                    <form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0" autoComplete="off">
                       <h1 className="text-center mb-4">{t('loginTitle')}</h1>
                       <div className="form-floating mb-3">
                         <input
@@ -80,7 +81,7 @@ export const AuthorizationForm = () => {
                           value={formik.values.username}
                           type="text"
                           name="username"
-                          autoComplete="username"
+                          autoComplete="off"
                           placeholder="Ваш ник"
                           id="username"
                           className={`form-control ${(formik.touched.username && formik.errors.username) || formik.errors.auth ? 'is-invalid' : ''}`}
@@ -98,7 +99,7 @@ export const AuthorizationForm = () => {
                           value={formik.values.password}
                           type="password"
                           name="password"
-                          autoComplete="current-password"
+                          autoComplete="off"
                           placeholder="Пароль"
                           id="password"
                           className={`form-control ${(formik.touched.password && formik.errors.password) || formik.errors.auth ? 'is-invalid' : ''}`}

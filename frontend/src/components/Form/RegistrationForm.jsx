@@ -5,6 +5,7 @@ import axios from 'axios'
 import { RegistrationSchema } from './validation.js'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import registrationImage from '../../assets/registrationImage.jpg'
 
 export const RegistrationForm = () => {
   const navigate = useNavigate()
@@ -60,9 +61,9 @@ export const RegistrationForm = () => {
                 <div className="card shadow-sm">
                   <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
                     <div>
-                      <img src="https://frontend-chat-ru.hexlet.app/assets/avatar_1-D7Cot-zE.jpg" alt="Регистрация" className="rounded-circle" />
+                      <img src={registrationImage} alt="Регистрация" className="rounded-circle" />
                     </div>
-                    <form onSubmit={formik.handleSubmit} className="w-50">
+                    <form onSubmit={formik.handleSubmit} className="w-50" autoComplete="off">
                       <h1 className="text-center mb-4">{t('registrationTitle')}</h1>
                       <div className="form-floating mb-3">
                         <input
@@ -71,7 +72,7 @@ export const RegistrationForm = () => {
                           value={formik.values.username}
                           type="text"
                           name="username"
-                          autoComplete="username"
+                          autoComplete="off"
                           placeholder={t('nameLength')}
                           id="username"
                           className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../Hooks/useAuth'
 import {
   useGetChannelsQuery,
@@ -17,6 +17,7 @@ export const HomePage = () => {
   const [currentChannelId, setCurrentChannelId] = useState(null)
   const { modal, openModal, closeModal } = useChannelModal()
   const { t } = useTranslation()
+  const messagesEndRef = useRef(null)
 
   const handleAddChannel = () => {
     openModal('add')
@@ -70,6 +71,14 @@ export const HomePage = () => {
     isLoading: isMessagesLoading,
     error: messagesError,
   } = useGetMessagesQuery(undefined, { skip: !token })
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behaviour: 'smooth' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   useSubscribeToMessagesQuery()
 
@@ -163,6 +172,9 @@ export const HomePage = () => {
                         {message.body}
                       </div>
                     ))}
+                    <div ref={messagesEndRef} />
+                    {' '}
+                    {/* Скролл к последнему сообщению. Рефит на пустой див */}
                   </div>
 
                   {/* Форма ввода */}
